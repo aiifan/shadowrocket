@@ -263,6 +263,19 @@ def url_for(filename):
         config.REPO, config.BRANCH, filename)
 
 
+def script_url_for(filename):
+    """js 脚本的运行时下载地址（script-path 用）。
+
+    独立于 URL_SCHEME: 脚本是 MITM 命中瞬间实时拉取的依赖，
+    jsdelivr 抽风会导致静默加载失败，固定走 raw（代理此时必然在线）。
+    SCRIPT_URL_SCHEME = "jsdelivr" 可回退跟全局一致。
+    """
+    if getattr(config, "SCRIPT_URL_SCHEME", "raw") == "jsdelivr":
+        return url_for(filename)
+    return "https://raw.githubusercontent.com/%s/%s/dist/%s" % (
+        config.REPO, config.BRANCH, filename)
+
+
 # --------------------------------------------------------------------------
 # 产物实现
 # --------------------------------------------------------------------------
@@ -330,7 +343,7 @@ def realize_module(art, emitted):
     if art.get("rewrite_js"):
         pat = re.compile(art["rewrite_js"])
         hits = len(pat.findall(text))
-        text = pat.sub(url_for(target), text)
+        text = pat.sub(script_url_for(target), text)
         if hits == 0:
             WARNINGS.append("[%s] rewrite 正则未命中任何 js 地址，模块仍指向上游" % art["file"])
     for token in art.get("must_contain", []):
