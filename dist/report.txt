@@ -48,10 +48,10 @@ proxy.module           bucket     OK         28526
         sha1 aa39dcc87ac8
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        192519
-    adguard   域名=190588 规则=0 丢弃关键词=0 跳过=2218
+reject.module          bucket     OK        192550
+    adguard   域名=190619 规则=0 丢弃关键词=0 跳过=2218
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 01843746ac7a
+        sha1 49816d1a615e
     plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
         sha1 c866e60d2760
