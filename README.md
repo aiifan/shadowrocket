@@ -1,7 +1,6 @@
 # shadowrocket 规则聚合
 
-个人 Shadowrocket 分流规则：多上游自动聚合、GitHub Actions 每日构建、固定 URL 订阅。
-三桶模式（拦截 / 直连 / 代理）+ 推送独立通道 + 个人覆盖规则，策略仅 DIRECT / PROXY / REJECT（PROXY = 首页当前选中节点，单节点友好）。
+个人 Shadowrocket 分流规则：多上游自动聚合、GitHub Actions 每日构建、固定 URL 订阅。三桶模式（拦截 / 直连 / 代理）+ iOS 服务独立通道（APNs 推送 / iCloud）+ 定位欺骗 + 个人覆盖规则，策略仅 DIRECT / PROXY / REJECT（PROXY = 首页当前选中节点，单节点友好）。定位欺骗来自 [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer)（MITM 改写 Apple 定位应答，配合 Cloudflare Worker 网页地图选点）。
 
 > 本仓库由 AI 全程生成——方案设计、构建流水线（`build/` 全部代码）与本文档均由
 > [TeleAgent 星辰超级智能体](https://www.teleai.com.cn/product/super-agent)（中电信人工智能）完成；
@@ -142,5 +141,29 @@ git push -u origin main
 
 > 注意：`dist/` 是构建产物但**需要提交入库**（手机订阅靠它）；`.cache/` 为上游缓存，不入库。
 > 仓库需保持 **public**：jsdelivr / raw.githubusercontent 只服务公开仓库，改私有后手机订阅会 404（私有仓库 Actions 仍可用，Free 账户每月 2000 分钟，但需另行设计配送，如另建公开配送仓库）。
+
+## Fork 使用说明
+
+想把这套流水线变成自己的？fork 之后按下面清单改，push 即得自己专属的构建。
+
+**第一步（必做）**：fork 的仓库 → Actions 页 → 点 "I understand my workflows, go ahead and enable them" 启用 workflows（fork 后默认禁用）。
+
+**第二步：按需修改**——
+
+| # | 改什么 | 在哪 | 必须? | 不改的后果 |
+|---|---|---|---|---|
+| 1 | `REPO = "aiifan/shadowrocket"` 换成自己的 `用户名/仓库名` | `build/config.py` | **必须** | main.conf 与模块引用的 URL 仍指向本仓库——手机下载的还是原作者的产物，自己改什么都不生效 |
+| 2 | 自用域名规则 | `build/buckets/me.py` | 按需 | 沿用原作者的三条自用域名（无功能损害） |
+| 3 | skip-proxy 的银行域名等 | `build/templates/main.conf.template` | 按需 | 多几条无害的直连 |
+| 4 | Cloudflare 四个 Secrets（仅定位欺骗+地图选点用到） | fork 仓库 Settings → Secrets | 可选 | deploy-worker 会在前置检查礼貌退出；spoofer.module 照常构建（静态坐标模式），核心三桶不受影响 |
+
+**第三步**：push 改动 → build workflow 自动触发（约 15s）→ 模块里 `dist/` 已是自己的，按「使用方法」一节添加订阅即可。
+
+几个说明：
+
+- 定位欺骗整个是**可选件**：不配 Secrets 自动降级，不拖累核心分流；
+- 构建自包含：上游数据源全是公开项目，与谁 fork 无关；GitHub Actions 免费额度跑本流水线（每天约 2~3 分钟）完全够用；
+- fork 后 `BRANCH = "main"` 一般不用动，除非你把默认分支改名了；
+- 想自定义 Worker 名称（默认 `ios-location-picker`）：Settings → Secrets and variables → Actions → Variables 加 `WORKER_NAME`。
 
 > AI生成
