@@ -228,7 +228,4 @@ main.conf              conf       OK            79
     - fututrustee.com
     ...（仅列前 50）
 
----- 告警 ----
-  [W] 已清理残留产物: push.module
-
 规则数区间防线、URL 方案等见 build/config.py；小火箭导入步骤见 dist/main.conf 头部注释。
