@@ -3,6 +3,10 @@
 个人 Shadowrocket 分流规则：多上游自动聚合、GitHub Actions 每日构建、固定 URL 订阅。
 三桶模式（拦截 / 直连 / 代理）+ 推送独立通道 + 个人覆盖规则，策略仅 DIRECT / PROXY / REJECT（PROXY = 首页当前选中节点，单节点友好）。
 
+> 本仓库由 AI 全程生成——方案设计、构建流水线（`build/` 全部代码）与本文档均由
+> [TeleAgent 星辰超级智能体](https://www.teleai.com.cn/product/super-agent)（中电信人工智能）完成；
+> 规则数据全部来自下表所列社区公开项目。
+
 ## 仓库结构
 
 ```
@@ -47,15 +51,15 @@ dist/                         # 构建产物（提交入库，供手机远程订
 
    | # | 模块 | 链接 |
    |---|---|---|
-   | ① | 个人规则 | `.../dist/me.module` |
-   | ② | 定位欺骗（可选） | `.../dist/spoofer.module` |
-   | ③ | 拦截 | `.../dist/reject.module` |
-   | ④ | 推送 | `.../dist/push.module` ← 必须在直连前 |
-   | ⑤ | 国内直连 | `.../dist/direct.module` |
-   | ⑥ | 代理 | `.../dist/proxy.module` |
+   | ① | 个人规则 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/me.module` |
+   | ② | 定位欺骗（可选） | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/spoofer.module` |
+   | ③ | 拦截 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/reject.module` |
+   | ④ | 推送 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/push.module` ← 必须在直连前 |
+   | ⑤ | 国内直连 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/direct.module` |
+   | ⑥ | 代理 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/proxy.module` |
 
-   前缀均为 `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main`
-   （jsdelivr 缓存约 12h；急改急用可在 build/config.py 将 URL_SCHEME 改为 "raw" 重跑构建）
+   （jsdelivr 缓存约 12h；急改急用可在 build/config.py 将 URL_SCHEME 改为 "raw" 重跑构建，
+   raw 直链形如 `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/proxy.module`，更新即时但需代理可达）
 
 4. 分流逻辑：拦截 > 推送 > 直连 > 代理 > CN 的 IP 直连(GEOIP) > 其余走代理(FINAL)
    想临时全代理 / 全直连，直接关闭对应模块即可。

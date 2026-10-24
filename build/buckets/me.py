@@ -14,6 +14,10 @@ POLICY = None          # None = 每行规则必须自带策略
 TITLE = "个人规则"
 
 RULES = """
+DOMAIN-SUFFIX,aiifan.pp.ua,DIRECT
+DOMAIN-SUFFIX,aiifan.dpdns.org,DIRECT
+DOMAIN-SUFFIX,yamu.com,DIRECT
+
 # --- 误判纠正示例: 某国内域名被分到代理，强制直连 ---
 # DOMAIN-SUFFIX,example.com.cn,DIRECT
 
