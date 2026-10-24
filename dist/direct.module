@@ -3,6 +3,8 @@
 #!category=分流
 
 [Rule]
+# 在此追加手工直连规则，示例:
+# DOMAIN-SUFFIX,yourcompany.cn
 DOMAIN,2mdn-cn.net,DIRECT
 DOMAIN,2mdn.net,DIRECT
 DOMAIN,a1.mzstatic.com,DIRECT

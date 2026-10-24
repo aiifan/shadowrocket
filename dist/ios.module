@@ -1,0 +1,30 @@
+#!name=iOS 服务（APNs推送+iCloud）
+#!desc=自动聚合(源: build/buckets/)，统一策略 PROXY；上游明细与交集报告见 dist/report.txt
+#!category=分流
+
+[Rule]
+# ===== iOS 服务统一走 PROXY（本模块须排 direct 模块之前）=====
+# 一、APNs 推送（依据 Apple 官方文档）:
+#   push.apple.com 后缀 = courier/api 长连主域(TCP 5223/443)
+#   push-apple.com 后缀 = init-* 初始化域名
+#   push-apple.com.akadns.net = init 域名 CNAME 目标(不在上两后缀内,须单列)
+#   DST-PORT,5223 = APNs 专用端口兜底(Apple 不公布专属 IP 段,长连必带 SNI)
+# 二、iCloud 同步（美区 Apple ID 显式走代理）:
+#   icloud.com / icloud-content.com = 同步主域
+#   me.com / mac.com = iCloud 邮件/日历旧域
+#   apple-cloudkit.com = iCloud 与三方 App 的 CloudKit 存储域
+#
+# ⚠ 使用注意: 改动本桶策略(PROXY<->DIRECT)或节点出口网段变化后，
+#   系统已建立的 APNs 长连接可能"僵死"——表现为节点正常但收不到
+#   任何推送（含 X/Telegram/微信等所有远程通知）。
+#   修复: 开关一次飞行模式（约 1 分钟），强制 iOS 重建 APNs 连接
+#   走新路由。改完先想起这一步，能少排查一小时。
+DOMAIN-SUFFIX,apple-cloudkit.com,PROXY
+DOMAIN-SUFFIX,icloud-content.com,PROXY
+DOMAIN-SUFFIX,icloud.com,PROXY
+DOMAIN-SUFFIX,mac.com,PROXY
+DOMAIN-SUFFIX,me.com,PROXY
+DOMAIN-SUFFIX,push-apple.com,PROXY
+DOMAIN-SUFFIX,push-apple.com.akadns.net,PROXY
+DOMAIN-SUFFIX,push.apple.com,PROXY
+DST-PORT,5223,PROXY

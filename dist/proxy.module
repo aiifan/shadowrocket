@@ -3,6 +3,8 @@
 #!category=分流
 
 [Rule]
+# 在此追加手工代理规则，示例:
+# DOMAIN-SUFFIX,example.dev
 DOMAIN,1password.drift.click,PROXY
 DOMAIN,3dns-1.adobe.com,PROXY
 DOMAIN,3dns-2.adobe.com,PROXY

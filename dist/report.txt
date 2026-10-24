@@ -15,6 +15,9 @@ direct.module          bucket     OK        110211
         sha1 1f3644d84778
     手工规则 0 条（源: build/buckets/direct.py）
 
+ios.module             bucket     OK             9
+    手工规则 9 条（源: build/buckets/ios.py）
+
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
@@ -45,13 +48,10 @@ proxy.module           bucket     OK         28526
         sha1 aa39dcc87ac8
     手工规则 0 条（源: build/buckets/proxy.py）
 
-push.module            bucket     OK             4
-    手工规则 4 条（源: build/buckets/push.py）
-
-reject.module          bucket     OK        192491
-    adguard   域名=190560 规则=0 丢弃关键词=0 跳过=2218
+reject.module          bucket     OK        192519
+    adguard   域名=190588 规则=0 丢弃关键词=0 跳过=2218
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 f1a0710e82f5
+        sha1 01843746ac7a
     plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
         sha1 c866e60d2760
@@ -227,5 +227,8 @@ main.conf              conf       OK            79
     - fututrade.com
     - fututrustee.com
     ...（仅列前 50）
+
+---- 告警 ----
+  [W] 已清理残留产物: push.module
 
 规则数区间防线、URL 方案等见 build/config.py；小火箭导入步骤见 dist/main.conf 头部注释。
