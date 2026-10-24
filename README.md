@@ -94,11 +94,26 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 - `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**` 或 `src/**`）也会触发；手动触发：Actions → build → Run workflow
 - `deploy-worker`：部署定位欺骗「地图选点」Cloudflare Worker（手动触发 + 每周一自动跟随上游）。首次使用：
   1. Cloudflare 侧准备：创建 API Token（模板 "Edit Cloudflare Workers"，含 KV 权限）、拿 Account ID、Dashboard 建一个 KV 命名空间记下 ID
-  2. 仓库 Settings → Secrets and variables → Actions 添加 5 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）/ `SPOOFER_CONFIG_URL`（第 3 步拿到地址后回填：`https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>`，仅 CI 构建注入，不入库）
+  2. 仓库 Settings → Secrets and variables → Actions 添加 4 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）
   3. Actions → deploy-worker → Run workflow，从输出拿到 `https://<name>.<子域>.workers.dev`
-  4. 构造第 2 步的 `SPOOFER_CONFIG_URL` 后，手动触发一次 `build` 重建模块（模块即接入远程配置；之后每日定时构建自动携带）
-  5. 手机浏览器打开 `https://<name>.<子域>.workers.dev/?token=<LOC_TOKEN>` 地图选点、保存即生效（约 60s 缓存）；对应页面 `/enable` 恢复真实位置
-  > 安全设计：loc.json 地址含 token，仅存 GitHub Secrets、经 CI 环境变量注入模块，仓库文件全程零敏感信息；本地构建不注入（模块维持静态坐标），需要时 `$env:SPOOFER_CONFIG_URL="..."` 后再跑（PowerShell）
+  4. 手机 Safari 打开 `https://<name>.<子域>.workers.dev/?token=<LOC_TOKEN>` 地图选点、保存即生效（约 60s 缓存）；对应页面 `/enable` 恢复真实位置
+
+### 地图选点接入小火箭（手机端手动加参数，仓库零改动）
+
+本仓库的 spoofer.module 保持上游原样（静态坐标）；要用地图选点，在小火箭里给模块追加 `configUrl` 参数即可：
+
+1. 模块页 → 点开 `iOS Location Spoofer` → 找到 `[Script]` 行（或"编辑"入口）
+2. 在该行末尾 `debug=false` 后追加（注意前面加 `&`）：
+
+   ```text
+   &configUrl=https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>
+   ```
+
+   即 argument 段变为 `...&debug=false&configUrl=https://.../loc.json?token=...`
+3. 保存后开关一次模块。之后地图页选点保存，约 60s 内手机定位跟随（模块本地的静态坐标被远程配置覆盖）；想去掉地图选点就删掉追加的这段
+
+> 设计说明：含 token 的地址只存在你手机和 Cloudflare 上，仓库文件/CI/Secrets 全程不经手；升级模块只需删参数→更新模块→再加参数，或干脆用小火箭的本地覆盖功能
+> （新版 iOS Location Spoofer 模块亦支持 Loon 式远程配置 URL 设置，见上游 README）。
 
 ## 仓库初始化 / 同步
 

@@ -32,10 +32,6 @@ jobs:
         run: python build/build.py --selftest
 
       - name: 构建规则产物
-        env:
-          # 定位欺骗地图选点的 loc.json 地址——仅 CI 有值，本地构建不注入；
-          # 未配置时 spoofer 模块维持静态坐标，构建不受影响
-          SPOOFER_CONFIG_URL: ${{ secrets.SPOOFER_CONFIG_URL }}
         run: python build/build.py
 
       - name: 提交产物（无变化则跳过）

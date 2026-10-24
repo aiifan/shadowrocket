@@ -24,7 +24,6 @@ import argparse
 import hashlib
 import importlib.util
 import ipaddress
-import os
 import re
 import sys
 import time
@@ -337,55 +336,16 @@ def parse_mitm_hostnames(text):
     return ""
 
 
-def append_argument_to(text, arg, origin):
-    """在模块 [Script] 段 argument= 行末尾追加参数（如 configUrl=<url>）。
-
-    上游 location-spoofer 的 argument 是行尾段（mode=...&debug=false），
-    远程配置由此注入；找不到 argument= 行时返回 None（上游模板变更）。"""
-    lines = text.splitlines()
-    for i, line in enumerate(lines):
-        if "argument=" in line:
-            lines[i] = line.rstrip() + "&" + arg
-            return "\n".join(lines)
-    return None
-
-
 def realize_module(art, emitted):
     inp, text = art["_inputs"][0]
     target = art.get("rewrite_to", "")
     hits = 0
-    arg_hits = 0
     if art.get("rewrite_js"):
         pat = re.compile(art["rewrite_js"])
         hits = len(pat.findall(text))
         text = pat.sub(script_url_for(target), text)
         if hits == 0:
             WARNINGS.append("[%s] rewrite 正则未命中任何 js 地址，模块仍指向上游" % art["file"])
-    if art.get("append_argument"):
-        patched = append_argument_to(text, art["append_argument"], art["file"])
-        if patched is None:
-            FAILURES.append("[%s] 未找到 argument= 行，无法注入 %r，上游模板疑似变更"
-                            % (art["file"], art["append_argument"].split("=")[0]))
-            return None
-        text = patched
-        arg_hits = 1
-    elif art.get("append_argument_env"):
-        # 敏感参数（含 token 的 URL 等）从环境变量取值：
-        # 仓库文件零敏感信息，仅 CI（Secrets 注入 env）构建时生效。
-        # 配置文件里只写 "<env 名>:模块参数名"，值永远不进公开文件。
-        env_name, arg_key = art["append_argument_env"].split(":", 1)
-        env_val = os.environ.get(env_name, "").strip()
-        if env_val:
-            arg = "%s=%s" % (arg_key, env_val)
-            patched = append_argument_to(text, arg, art["file"])
-            if patched is None:
-                FAILURES.append("[%s] 未找到 argument= 行，无法注入 %r，上游模板疑似变更"
-                                % (art["file"], arg_key))
-                return None
-            text = patched
-            arg_hits = 1
-            WARNINGS.append("[%s] 已从环境变量 %s 注入 %s（本产物含此敏感值，仅限自用）"
-                            % (art["file"], env_name, arg_key))
     for token in art.get("must_contain", []):
         if token not in text:
             FAILURES.append("[%s] 内容缺少特征 %r，模板疑似变更需人工检查" % (art["file"], token))
@@ -400,7 +360,7 @@ def realize_module(art, emitted):
     mitm = parse_mitm_hostnames(text)
     if mitm:
         MITM_MAP[art["file"]] = mitm
-    return text, {"hits": hits, "arg_hits": arg_hits}
+    return text, {"hits": hits}
 
 
 def realize_gm_module(art):
@@ -839,14 +799,6 @@ def selftest():
         "[General]\nx = 1\n\n[MITM]\n# 注释\nhostname = \n\n[Rule]\ny = 2\n")
     assert "[MITM]" not in stripped and "[General]" in stripped and "[Rule]" in stripped
 
-    # argument 注入：找 argument= 行追加；找不到返回 None
-    out = append_argument_to(
-        "[Script]\nspoofer = type=http-response,script-path=x.js,argument=mode=response&debug=false\n\n[MITM]\nhostname = a.com",
-        "configUrl=https://w.example/loc.json?token=t1", "t")
-    assert "argument=mode=response&debug=false&configUrl=https://w.example/loc.json?token=t1" in out, out
-    assert "hostname = a.com" in out          # 其余段落不受影响
-    assert append_argument_to("no argument here\n", "x=1", "t") is None
-
     assert gm_module_text(
         dict(file="x.module", policy="DIRECT"), {"a.com"}, set()
     ).splitlines()[0] == "#!name=x"
@@ -972,13 +924,6 @@ def main(argv=None):
             emitted.add(fname)
             mod_stats = ["js 链接重写 %d 处 -> %s" % (meta["hits"],
                                                       art.get("rewrite_to"))]
-            if meta.get("arg_hits"):
-                arg_src = art.get("append_argument")
-                if arg_src:
-                    mod_stats.append("argument 注入 %s" % arg_src.split("=", 1)[0])
-                else:
-                    mod_stats.append("argument 注入（环境变量 %s）"
-                                     % art["append_argument_env"].split(":", 1)[0])
             results.append((fname, kind, "OK", len(text.splitlines()), mod_stats))
         else:
             FAILURES.append("[%s] 未知产物类型 %s" % (fname, kind))
