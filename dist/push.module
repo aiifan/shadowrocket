@@ -1,4 +1,4 @@
-#!name=推送
+#!name=iOS APNs推送
 #!desc=自动聚合(源: build/buckets/)，统一策略 PROXY；上游明细与交集报告见 dist/report.txt
 #!category=分流
 
