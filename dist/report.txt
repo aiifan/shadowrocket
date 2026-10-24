@@ -63,7 +63,7 @@ location-spoofer.js    raw        OK          2136
 spoofer.module         module     OK             9
     js 链接重写 1 处 -> location-spoofer.js
 
-main.conf              conf       OK            73
+main.conf              conf       OK            79
 
 ---- 自动源 DOMAIN-KEYWORD 丢弃统计（铁律，仅 me.list 允许） ----
     proxy.module: 7
