@@ -21,7 +21,7 @@
 # ==================================================================
 
 POLICY = "PROXY"
-TITLE = "iOS 服务（APNs推送+iCloud）"
+TITLE = "iOS 服务"
 GUARDS = (4, 50)          # 手写桶，上限收紧防误粘贴大列表
 
 UPSTREAMS = []            # 纯手写，无上游
@@ -43,10 +43,10 @@ RULES = """
 #   任何推送（含 X/Telegram/微信等所有远程通知）。
 #   修复: 开启代理后，开关一次飞行模式（约 1 分钟），强制 iOS 重建 APNs 连接
 #   走新路由。改完先想起这一步，能少排查一小时。
-DOMAIN-SUFFIX,push.apple.com
-DOMAIN-SUFFIX,push-apple.com
-DOMAIN-SUFFIX,push-apple.com.akadns.net
-DST-PORT,5223
+# DOMAIN-SUFFIX,push.apple.com
+# DOMAIN-SUFFIX,push-apple.com
+# DOMAIN-SUFFIX,push-apple.com.akadns.net
+# DST-PORT,5223
 DOMAIN-SUFFIX,icloud.com
 DOMAIN-SUFFIX,icloud-content.com
 DOMAIN-SUFFIX,me.com
