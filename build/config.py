@@ -30,14 +30,15 @@ SCRIPT_URL_SCHEME = "raw"
 # ---------------------------------------------------------------------------
 _MS = "https://raw.githubusercontent.com/mekos2772/ios-location-spoofer/main"
 
-# 定位欺骗「地图选点」远程配置：填 Cloudflare Worker 的 loc.json 地址后，
-# 构建时自动追加到 spoofer 模块的 argument（地图选点保存即生效，约 60s 缓存）。
-# 留空 = 不注入（模块用 argument 里的静态坐标）。
-# !! 部署方式见 .github/workflows/deploy-worker.yml（首次需配 4 个 Secrets）
-# !! 地址含 token 会随模块进入公开仓库——泄露后果仅限被人改假定位(恶作剧级)，
-#    建议 token 用高熵随机串；换 token 后重跑 deploy workflow + 构建
-SPOOFER_CONFIG_URL = ""
-
+# 定位欺骗「地图选点」远程配置：小火箭模块通过 configUrl 拉取 Worker 上的
+# loc.json，地图选点保存即生效（约 60s 缓存）。
+#
+# 敏感信息走环境变量（本文件与仓库全程不含 token）：
+#   spoofer 模块的 configUrl 取自环境变量 SPOOFER_CONFIG_URL —— 仅 CI 构建时
+#   生效（Actions Secret 同名注入；本地构建默认不注入，本地想注入时：
+#   $env:SPOOFER_CONFIG_URL="https://.../loc.json?token=xxx" 再跑构建）。
+#   想改回非敏感静态写法，把 append_argument_env 换成 append_argument 即可。
+# Worker 的部署方式见 .github/workflows/deploy-worker.yml（首次需配 4 个 Secrets）
 EXTRA_ARTIFACTS = [
     # 定位欺骗脚本（原样分发，spoofer.module 依赖它，顺序必须在前）
     dict(
@@ -50,7 +51,7 @@ EXTRA_ARTIFACTS = [
         file="spoofer.module", kind="module", optional=True, policy="定位欺骗(独立模块)",
         rewrite_to="location-spoofer.js",
         rewrite_js=r"https?://[^\s\"'<>]+/location-spoofer\.js",
-        append_argument=("configUrl=" + SPOOFER_CONFIG_URL) if SPOOFER_CONFIG_URL else "",
+        append_argument_env="SPOOFER_CONFIG_URL:configUrl",
         must_contain=["gs-loc.apple.com"],
         inputs=[dict(url=_MS + "/ios-location-spoofer.sgmodule", parser="module")],
     ),

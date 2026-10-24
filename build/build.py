@@ -24,6 +24,7 @@ import argparse
 import hashlib
 import importlib.util
 import ipaddress
+import os
 import re
 import sys
 import time
@@ -368,6 +369,23 @@ def realize_module(art, emitted):
             return None
         text = patched
         arg_hits = 1
+    elif art.get("append_argument_env"):
+        # 敏感参数（含 token 的 URL 等）从环境变量取值：
+        # 仓库文件零敏感信息，仅 CI（Secrets 注入 env）构建时生效。
+        # 配置文件里只写 "<env 名>:模块参数名"，值永远不进公开文件。
+        env_name, arg_key = art["append_argument_env"].split(":", 1)
+        env_val = os.environ.get(env_name, "").strip()
+        if env_val:
+            arg = "%s=%s" % (arg_key, env_val)
+            patched = append_argument_to(text, arg, art["file"])
+            if patched is None:
+                FAILURES.append("[%s] 未找到 argument= 行，无法注入 %r，上游模板疑似变更"
+                                % (art["file"], arg_key))
+                return None
+            text = patched
+            arg_hits = 1
+            WARNINGS.append("[%s] 已从环境变量 %s 注入 %s（本产物含此敏感值，仅限自用）"
+                            % (art["file"], env_name, arg_key))
     for token in art.get("must_contain", []):
         if token not in text:
             FAILURES.append("[%s] 内容缺少特征 %r，模板疑似变更需人工检查" % (art["file"], token))
@@ -955,7 +973,12 @@ def main(argv=None):
             mod_stats = ["js 链接重写 %d 处 -> %s" % (meta["hits"],
                                                       art.get("rewrite_to"))]
             if meta.get("arg_hits"):
-                mod_stats.append("argument 注入 %s" % art["append_argument"].split("=", 1)[0])
+                arg_src = art.get("append_argument")
+                if arg_src:
+                    mod_stats.append("argument 注入 %s" % arg_src.split("=", 1)[0])
+                else:
+                    mod_stats.append("argument 注入（环境变量 %s）"
+                                     % art["append_argument_env"].split(":", 1)[0])
             results.append((fname, kind, "OK", len(text.splitlines()), mod_stats))
         else:
             FAILURES.append("[%s] 未知产物类型 %s" % (fname, kind))

@@ -101,11 +101,11 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 - `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**` 或 `src/**`）也会触发；手动触发：Actions → build → Run workflow
 - `deploy-worker`：部署定位欺骗「地图选点」Cloudflare Worker（手动触发 + 每周一自动跟随上游）。首次使用：
   1. Cloudflare 侧准备：创建 API Token（模板 "Edit Cloudflare Workers"，含 KV 权限）、拿 Account ID、Dashboard 建一个 KV 命名空间记下 ID
-  2. 仓库 Settings → Secrets and variables → Actions 添加 4 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）
+  2. 仓库 Settings → Secrets and variables → Actions 添加 5 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）/ `SPOOFER_CONFIG_URL`（第 3 步拿到地址后回填：`https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>`，仅 CI 构建注入，不入库）
   3. Actions → deploy-worker → Run workflow，从输出拿到 `https://<name>.<子域>.workers.dev`
-  4. 把 `https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>` 填进 `build/config.py` 的 `SPOOFER_CONFIG_URL`，push 让 CI 重建模块（模块即接入远程配置）
+  4. 构造第 2 步的 `SPOOFER_CONFIG_URL` 后，手动触发一次 `build` 重建模块（模块即接入远程配置；之后每日定时构建自动携带）
   5. 手机浏览器打开 `https://<name>.<子域>.workers.dev/?token=<LOC_TOKEN>` 地图选点、保存即生效（约 60s 缓存）；对应页面 `/enable` 恢复真实位置
-  > 注意：`SPOOFER_CONFIG_URL` 含 token，会随模块进入本公开仓库，泄露后果仅限被人改假定位（恶作剧级）；建议高熵 token
+  > 安全设计：loc.json 地址含 token，仅存 GitHub Secrets、经 CI 环境变量注入模块，仓库文件全程零敏感信息；本地构建不注入（模块维持静态坐标），需要时 `$env:SPOOFER_CONFIG_URL="..."` 后再跑（PowerShell）
 
 ## 仓库初始化 / 同步
 
