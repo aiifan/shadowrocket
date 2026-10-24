@@ -100,10 +100,20 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 
 ### 地图选点接入小火箭（手机端手动加参数，仓库零改动）
 
-本仓库的 spoofer.module 保持上游原样（静态坐标）；要用地图选点，在小火箭里给模块追加 `configUrl` 参数即可：
+本仓库的 spoofer.module 保持上游原样（静态坐标）；要用地图选点，在小火箭里给模块追加 `configUrl` 参数即可。
+
+Worker 有三个地址， 注意路径区别（前缀均为 `https://<name>.<子域>.workers.dev`）：
+
+| 用途 | 完整地址 | 说明 |
+|---|---|---|
+| 地图选点页 | `…/?token=<LOC_TOKEN>` | 手机 Safari 打开，点图钉→保存定位 |
+| 坐标 JSON | `…/loc.json?token=<LOC_TOKEN>` | 浏览器打开验证经纬度是否已变化 |
+| 模块 configUrl | `…/loc.json?token=<LOC_TOKEN>` | **注意带 `/loc.json`**，模块追加的与上同 |
+
+操作步骤：
 
 1. 模块页 → 点开 `iOS Location Spoofer` → 找到 `[Script]` 行（或"编辑"入口）
-2. 在该行末尾 `debug=false` 后追加（注意前面加 `&`）：
+2. 在该行末尾 `debug=false` 后追加（注意前面加 `&`，**路径含 `/loc.json`**）：
 
    ```text
    &configUrl=https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>
@@ -111,6 +121,7 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 
    即 argument 段变为 `...&debug=false&configUrl=https://.../loc.json?token=...`
 3. 保存后开关一次模块。之后地图页选点保存，约 60s 内手机定位跟随（模块本地的静态坐标被远程配置覆盖）；想去掉地图选点就删掉追加的这段
+4. **模块更新会把手动加的参数冲掉**：小火箭更新 spoofer.module 后需重新追加一次 `&configUrl=...`（所以更新流程 = 删参数 → 更新模块 → 再加参数）
 
 > 设计说明：含 token 的地址只存在你手机和 Cloudflare 上，仓库文件/CI/Secrets 全程不经手；升级模块只需删参数→更新模块→再加参数，或干脆用小火箭的本地覆盖功能
 > （新版 iOS Location Spoofer 模块亦支持 Loon 式远程配置 URL 设置，见上游 README）。
