@@ -302,6 +302,27 @@ def realize_raw(art):
     return text
 
 
+def parse_mitm_hostnames(text):
+    """提取模块文本 [MITM] 段的 hostname 域名列表（纯函数，selftest 覆盖）。
+
+    支持 "hostname = %APPEND% a, b" 与 "hostname = a, b" 两种写法。
+    返回域名串（', ' 分隔）；无 [MITM] 段时返回 ""。
+    """
+    in_mitm = False
+    for line in text.splitlines():
+        s = line.strip()
+        if s.startswith("["):
+            in_mitm = (s == "[MITM]")
+            continue
+        if in_mitm and s.lower().startswith("hostname"):
+            val = s.split("=", 1)[1].strip()
+            if val.startswith("%APPEND%"):
+                val = val[len("%APPEND%"):].strip()
+            domains = [d.strip() for d in val.split(",") if d.strip()]
+            return ", ".join(domains)
+    return ""
+
+
 def realize_module(art, emitted):
     inp, text = art["_inputs"][0]
     target = art.get("rewrite_to", "")
@@ -323,6 +344,9 @@ def realize_module(art, emitted):
             return None
         FAILURES.append("[%s] 依赖的 %s 未产出" % (art["file"], target))
         return None
+    mitm = parse_mitm_hostnames(text)
+    if mitm:
+        MITM_MAP[art["file"]] = mitm
     return text, {"hits": hits}
 
 
@@ -516,6 +540,7 @@ def _manual_body(text):
 results, rules_by_file = [], {}
 kw_drops = {}
 emitted = set()
+MITM_MAP = {}      # 模块名 -> MITM hostname 域名串（主配置 [MITM] 段引用）
 
 
 def build_bucket(b, offline):
@@ -591,6 +616,7 @@ def _prefetch(inputs, fname, offline):
 
 
 _URL_TPL_RE = re.compile(r"\{\{URL::([^}\s]+)\}\}")
+_MITM_TPL_RE = re.compile(r"\{\{MITM::([^}\s]+)\}\}")
 
 
 def render_conf(available):
@@ -605,7 +631,18 @@ def render_conf(available):
             return "ABOUT:MISSING:" + fname
         return url_for(fname)
 
-    out = _URL_TPL_RE.sub(repl, CONF_TPL.read_text(encoding="utf-8"))
+    def repl_mitm(m):
+        fname = m.group(1)
+        val = MITM_MAP.get(fname, "")
+        if not val:
+            WARNINGS.append("[main.conf] %s 未提供 MITM 域名（上游缺失?），[MITM] 段将省略" % fname)
+        return val
+
+    out = CONF_TPL.read_text(encoding="utf-8")
+    out = _URL_TPL_RE.sub(repl, out)
+    out = _MITM_TPL_RE.sub(repl_mitm, out)
+    # 上游缺失时 hostname 为空 -> 整段删除，避免产出空 [MITM] 段
+    out = re.sub(r"\[MITM\](?:\n#[^\n]*)*\nhostname = \n(\n)?", "", out)
     leftovers = re.findall(r"\{\{[^}]*\}\}", out)
     if leftovers:
         FAILURES.append("[main.conf] 模板占位符未识别: %s" % leftovers)
@@ -726,6 +763,18 @@ def selftest():
     assert "IP-CIDR6,2400:cb00::/32,REJECT" in lines
     assert "IP-ASN,20473,REJECT,no-resolve" in lines
     assert lines == sorted(lines[:2]) + lines[2:], "前两条应按域名排序"
+
+    # [MITM] hostname 提取：APPEND 与裸写两种格式 / 无段返回空
+    assert parse_mitm_hostnames(
+        "[Script]\nx = 1\n\n[MITM]\nhostname = %APPEND% a.com, b.cn\n"
+    ) == "a.com, b.cn"
+    assert parse_mitm_hostnames("[MITM]\nhostname = c.com\n") == "c.com"
+    assert parse_mitm_hostnames("[Rule]\nDOMAIN,x.com,DIRECT\n") == ""
+    # 空 hostname 时整段删除（含注释行）
+    stripped = re.sub(
+        r"\[MITM\](?:\n#[^\n]*)*\nhostname = \n(\n)?", "",
+        "[General]\nx = 1\n\n[MITM]\n# 注释\nhostname = \n\n[Rule]\ny = 2\n")
+    assert "[MITM]" not in stripped and "[General]" in stripped and "[Rule]" in stripped
 
     assert gm_module_text(
         dict(file="x.module", policy="DIRECT"), {"a.com"}, set()
