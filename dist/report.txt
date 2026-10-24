@@ -1,0 +1,231 @@
+================ 规则聚合构建报告 ================
+仓库: aiifan/shadowrocket@main   URL_SCHEME=jsdelivr
+说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
+
+---- 产物清单 ----
+direct.module          bucket     OK        110211
+    v2fly     域名=0 规则=110185 丢弃关键词=0 跳过=58
+        https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
+        sha1 f8e68d2a6566
+    v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
+        https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
+        sha1 f7857c840792
+    surge     域名=0 规则=33 丢弃关键词=0 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeChat/WeChat.list
+        sha1 1f3644d84778
+    手工规则 0 条（源: build/buckets/direct.py）
+
+me.module              bucket     OK             1
+    源: build/buckets/me.py（透传桶，无上游）
+
+proxy.module           bucket     OK         28526
+    v2fly     域名=0 规则=27242 丢弃关键词=0 跳过=222
+        https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
+        sha1 b7a1cf142db2
+    surge     域名=0 规则=34 丢弃关键词=1 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
+        sha1 1d0d434939f0
+    surge     域名=0 规则=3 丢弃关键词=0 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anthropic/Anthropic.list
+        sha1 339ecadc134d
+    surge     域名=0 规则=1153 丢弃关键词=4 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Netflix/Netflix.list
+        sha1 36716ee8159e
+    surge     域名=0 规则=189 丢弃关键词=1 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/YouTube/YouTube.list
+        sha1 f18b6211fe82
+    surge     域名=0 规则=173 丢弃关键词=0 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Disney/Disney.list
+        sha1 6825b2e0629b
+    surge     域名=0 规则=39 丢弃关键词=1 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Telegram/Telegram.list
+        sha1 1141541e38b0
+    bm_domain 域名=0 规则=1560 丢弃关键词=0 跳过=0
+        https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Apple/Apple_Domain.list
+        sha1 aa39dcc87ac8
+    手工规则 0 条（源: build/buckets/proxy.py）
+
+push.module            bucket     OK             4
+    手工规则 4 条（源: build/buckets/push.py）
+
+reject.module          bucket     OK        192462
+    adguard   域名=190531 规则=0 丢弃关键词=0 跳过=2218
+        https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
+        sha1 9570e55ce7c9
+    plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
+        https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
+        sha1 c866e60d2760
+    手工规则 0 条（源: build/buckets/reject.py）
+
+location-spoofer.js    raw        OK          2136
+    按原样分发 68082 字节
+
+spoofer.module         module     OK             9
+    js 链接重写 1 处 -> location-spoofer.js
+
+main.conf              conf       OK            72
+
+---- 自动源 DOMAIN-KEYWORD 丢弃统计（铁律，仅 me.list 允许） ----
+    proxy.module: 7
+
+---- 交集冲突（只报告，处置见 conf 优先级与 me.list 覆盖） ----
+### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 281 条
+    - 003store.com
+    - 165tchuang.com
+    - 1l1.cc
+    - 25662zubo23739.com
+    - 2mdn-cn.net
+    - 2mdn.net
+    - 3337723.com
+    - 360ads.com
+    - 365dmp.com
+    - 39jz.com
+    - 3p8801.co
+    - 50bang.org
+    - 51.la
+    - 518ad.com
+    - 54kefu.net
+    - 55726zubo56686.com
+    - 57573zubo36833.com
+    - 595image.com
+    - 5enhjla7z.com
+    - 5hffr1p22j.com
+    - 609999.xyz
+    - 644446.com
+    - 68287zubo85737.com
+    - 6fm4dcpj31.com
+    - 6pctuhriw.com
+    - 73336zubo25326.com
+    - 88362zubo95838.com
+    - 8k69vb6421.com
+    - 93692zubo66936.com
+    - 96382zubo66756.com
+    - a4xvv2g18l.com
+    - acobt.tech
+    - ad7.com
+    - adkwai.com
+    - admob-cn.com
+    - adsame.com
+    - adservice.google.com
+    - adsmogo.com
+    - adsmogo.mobi
+    - adsmogo.net
+    - adview.com
+    - adxvip.com
+    - aeqfuyc.com
+    - ainb01010zh.com
+    - ainb12251zh.com
+    - aivaylaco.com
+    - aiwanma99.com
+    - aizhantj.com
+    - alimama.com
+    - allyes.com
+    ...（仅列前 50）
+
+### REJECT ∩ PROXY（将对代理域名生效拦截，预期为国外广告域名）: 123 条
+    - 0emm.com
+    - 2mdn-cn.net
+    - 2mdn.net
+    - 2o7.net
+    - 52av.be
+    - addthis.com
+    - addthisedge.com
+    - admeld.com
+    - admob-cn.com
+    - admob.com
+    - adobetag.com
+    - ads-twitter.com
+    - adult3dcomics.com
+    - adultblogtoplist.com
+    - akstat.io
+    - app-analytics-services.com
+    - app-measurement.com
+    - apture.com
+    - area51.to
+    - asextube.net
+    - awempire.com
+    - awstrack.me
+    - bbc-reporting-api.app
+    - bimbim.com
+    - bizographics.com
+    - bluffyporn.com
+    - bronto.com
+    - browser-intake-datadoghq.com
+    - cambaddies.com
+    - camonster.com
+    - camsoda1.com
+    - clck.ru
+    - click-url.com
+    - clickserve.cc-dt.com
+    - cloudflareinsights.com
+    - conviva.com
+    - copilot-telemetry.githubusercontent.com
+    - crashlytics.com
+    - cs.co
+    - digitaldesire.com
+    - dirty.games
+    - dobbyporn.com
+    - doubleclick-cn.net
+    - doubleclick.net
+    - ebayadvertising.com
+    - ebayclassifiedsgroup.com
+    - ebayrtm.com
+    - erogazopple.com
+    - events.statsigapi.net
+    - fapcat.com
+    ...（仅列前 50）
+
+### DIRECT ∩ PROXY（两边都收录，direct 模块在前为先；预期为灰色双收录）: 160 条
+    - 265.com
+    - 2mdn-cn.net
+    - 2mdn.net
+    - 91cy.app
+    - 99thz.com
+    - aa77kk.com
+    - acs.org
+    - admob-cn.com
+    - age.tv
+    - agedm.app
+    - agefans.com
+    - alibabacloud.com
+    - alicloud.com
+    - app-analytics-services.com
+    - app-measurement-cn.com
+    - app-measurement.com
+    - apps5.oingo.com
+    - as.mr
+    - asmr.gay
+    - avail.googleflights.net
+    - avstar4.com
+    - beatsbydre.com
+    - bilinovel.com
+    - binancezh.kim
+    - binancezh.link
+    - calgoncarbon-china.com
+    - chinamule.com
+    - clickserve.cc-dt.com
+    - clickserver.googleads.com
+    - cnpmjs.org
+    - ctyun.online
+    - cxacg.com
+    - dartsearch-cn.net
+    - developer.microsoft.com
+    - doubleclick-cn.net
+    - doubleclick.net
+    - eilieili.cc
+    - fi11.com
+    - footseen.com
+    - furrybar.com
+    - futu5.com
+    - futuau.com
+    - futuesop.com
+    - futufin.com
+    - futuhn.com
+    - futuniuniu.com
+    - futunn.com
+    - futustatic.com
+    - fututrade.com
+    - fututrustee.com
+    ...（仅列前 50）
+
+规则数区间防线、URL 方案等见 build/config.py；小火箭导入步骤见 dist/main.conf 头部注释。

@@ -1,0 +1,19 @@
+#!name=个人规则
+#!desc=个人覆盖规则（源: build/buckets/，模块置顶=优先级最高）
+#!category=分流
+
+[Rule]
+# --- 误判纠正示例: 某国内域名被分到代理，强制直连 ---
+# DOMAIN-SUFFIX,example.com.cn,DIRECT
+
+# --- 某国内备案站想走代理 ---
+# DOMAIN-SUFFIX,some.cn.site,PROXY
+
+# --- 追加屏蔽 ---
+# DOMAIN-SUFFIX,ads.example.com,REJECT
+
+# --- 某域名想单独走某个分支(比如 Telegram 图床) ---
+# DOMAIN-SUFFIX,imgbox.com,PROXY
+
+# 保底规则（有自己的规则后可删）
+IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
