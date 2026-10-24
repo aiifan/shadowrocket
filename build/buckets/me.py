@@ -29,7 +29,4 @@ DOMAIN-SUFFIX,yamu.com,DIRECT
 
 # --- 某域名想单独走某个分支(比如 Telegram 图床) ---
 # DOMAIN-SUFFIX,imgbox.com,PROXY
-
-# 保底规则（有自己的规则后可删）
-IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
 """

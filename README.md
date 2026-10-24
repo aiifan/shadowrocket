@@ -43,11 +43,14 @@ dist/                         # 构建产物（提交入库，供手机远程订
 ## 使用方法（小火箭端）
 
 1. **首页** → 添加节点订阅并选中节点（PROXY 即指向它）
-2. **配置** → 右上角 + → 添加：
+2. **配置** → 右上角 + → 添加（两套任选其一）：
 
-   `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/main.conf`
+   - jsdelivr：`https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/main.conf`
+   - raw 直链：`https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/main.conf`
 
-3. **配置 → 模块** → 右上角 +，依次添加并启用，**顺序必须从上到下如下**（上 = 优先级高）：
+3. **配置 → 模块** → 右上角 +，依次添加并启用，**顺序必须从上到下如下**（上 = 优先级高）。每个模块两套链接任选其一：
+
+   **链接 A：jsdelivr（国内可达，缓存约 12h）**
 
    | # | 模块 | 链接 |
    |---|---|---|
@@ -58,8 +61,21 @@ dist/                         # 构建产物（提交入库，供手机远程订
    | ⑤ | 国内直连 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/direct.module` |
    | ⑥ | 代理 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/proxy.module` |
 
-   （jsdelivr 缓存约 12h；急改急用可在 build/config.py 将 URL_SCHEME 改为 "raw" 重跑构建，
-   raw 直链形如 `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/proxy.module`，更新即时但需代理可达）
+   **链接 B：raw 直链（GitHub 原始文件，更新即时，国内需代理可达）**
+
+   | # | 模块 | 链接 |
+   |---|---|---|
+   | ① | 个人规则 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/me.module` |
+   | ② | 定位欺骗（可选） | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/spoofer.module` |
+   | ③ | 拦截 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/reject.module` |
+   | ④ | 推送 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/push.module` ← 必须在直连前 |
+   | ⑤ | 国内直连 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/direct.module` |
+   | ⑥ | 代理 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/proxy.module` |
+
+   > 两套链接内容完全一致，同一模块用哪套、是否混用均可
+   > （例如只给 push.module 用 raw，让刚改的推送规则火速生效）。
+   > main.conf 头部注释里嵌的是 jsdelivr 链接；想让生成产物改嵌 raw，
+   > 把 build/config.py 的 URL_SCHEME 改为 "raw" 重跑构建即可。
 
 4. 分流逻辑：拦截 > 推送 > 直连 > 代理 > CN 的 IP 直连(GEOIP) > 其余走代理(FINAL)
    想临时全代理 / 全直连，直接关闭对应模块即可。
