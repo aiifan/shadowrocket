@@ -336,16 +336,38 @@ def parse_mitm_hostnames(text):
     return ""
 
 
+def append_argument_to(text, arg, origin):
+    """在模块 [Script] 段 argument= 行末尾追加参数（如 configUrl=<url>）。
+
+    上游 location-spoofer 的 argument 是行尾段（mode=...&debug=false），
+    远程配置由此注入；找不到 argument= 行时返回 None（上游模板变更）。"""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        if "argument=" in line:
+            lines[i] = line.rstrip() + "&" + arg
+            return "\n".join(lines)
+    return None
+
+
 def realize_module(art, emitted):
     inp, text = art["_inputs"][0]
     target = art.get("rewrite_to", "")
     hits = 0
+    arg_hits = 0
     if art.get("rewrite_js"):
         pat = re.compile(art["rewrite_js"])
         hits = len(pat.findall(text))
         text = pat.sub(script_url_for(target), text)
         if hits == 0:
             WARNINGS.append("[%s] rewrite 正则未命中任何 js 地址，模块仍指向上游" % art["file"])
+    if art.get("append_argument"):
+        patched = append_argument_to(text, art["append_argument"], art["file"])
+        if patched is None:
+            FAILURES.append("[%s] 未找到 argument= 行，无法注入 %r，上游模板疑似变更"
+                            % (art["file"], art["append_argument"].split("=")[0]))
+            return None
+        text = patched
+        arg_hits = 1
     for token in art.get("must_contain", []):
         if token not in text:
             FAILURES.append("[%s] 内容缺少特征 %r，模板疑似变更需人工检查" % (art["file"], token))
@@ -360,7 +382,7 @@ def realize_module(art, emitted):
     mitm = parse_mitm_hostnames(text)
     if mitm:
         MITM_MAP[art["file"]] = mitm
-    return text, {"hits": hits}
+    return text, {"hits": hits, "arg_hits": arg_hits}
 
 
 def realize_gm_module(art):
@@ -799,6 +821,14 @@ def selftest():
         "[General]\nx = 1\n\n[MITM]\n# 注释\nhostname = \n\n[Rule]\ny = 2\n")
     assert "[MITM]" not in stripped and "[General]" in stripped and "[Rule]" in stripped
 
+    # argument 注入：找 argument= 行追加；找不到返回 None
+    out = append_argument_to(
+        "[Script]\nspoofer = type=http-response,script-path=x.js,argument=mode=response&debug=false\n\n[MITM]\nhostname = a.com",
+        "configUrl=https://w.example/loc.json?token=t1", "t")
+    assert "argument=mode=response&debug=false&configUrl=https://w.example/loc.json?token=t1" in out, out
+    assert "hostname = a.com" in out          # 其余段落不受影响
+    assert append_argument_to("no argument here\n", "x=1", "t") is None
+
     assert gm_module_text(
         dict(file="x.module", policy="DIRECT"), {"a.com"}, set()
     ).splitlines()[0] == "#!name=x"
@@ -922,9 +952,11 @@ def main(argv=None):
             text, meta = ret
             write_lf(DIST_DIR / fname, text)
             emitted.add(fname)
-            results.append((fname, kind, "OK", len(text.splitlines()),
-                            ["js 链接重写 %d 处 -> %s" % (meta["hits"],
-                                                          art.get("rewrite_to"))]))
+            mod_stats = ["js 链接重写 %d 处 -> %s" % (meta["hits"],
+                                                      art.get("rewrite_to"))]
+            if meta.get("arg_hits"):
+                mod_stats.append("argument 注入 %s" % art["append_argument"].split("=", 1)[0])
+            results.append((fname, kind, "OK", len(text.splitlines()), mod_stats))
         else:
             FAILURES.append("[%s] 未知产物类型 %s" % (fname, kind))
 

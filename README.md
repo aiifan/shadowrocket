@@ -37,6 +37,7 @@ dist/                         # 构建产物（提交入库，供手机远程订
 | reject.module | [pgl.yoyo.org](https://pgl.yoyo.org/adservers/) 广告域名表 | 可选补充 |
 | ios.module | Apple 官方文档（APNs 章节，手写） | 推送域名（push.apple.com 等）+ 5223 端口 + iCloud 同步主域（美区账号显式走代理） |
 | spoofer.module | [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer) | 定位欺骗，脚本已重写为自托管 |
+| 地图选点 Worker | [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer) `location-picker/worker`（Cloudflare Worker + KV） | 网页地图选点，API 与其 Node 版兼容；由 `.github/workflows/deploy-worker.yml` 自动部署 |
 
 各上游的具体快照（sha1、条数、跳过数）见构建产物 `dist/report.txt`。
 
@@ -97,9 +98,14 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 
 ## CI（GitHub Actions）
 
-- 每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交
-- push 到 main（改动 `build/**` 或 `src/**`）也会触发
-- 手动触发：Actions → build → Run workflow
+- `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**` 或 `src/**`）也会触发；手动触发：Actions → build → Run workflow
+- `deploy-worker`：部署定位欺骗「地图选点」Cloudflare Worker（手动触发 + 每周一自动跟随上游）。首次使用：
+  1. Cloudflare 侧准备：创建 API Token（模板 "Edit Cloudflare Workers"，含 KV 权限）、拿 Account ID、Dashboard 建一个 KV 命名空间记下 ID
+  2. 仓库 Settings → Secrets and variables → Actions 添加 4 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）
+  3. Actions → deploy-worker → Run workflow，从输出拿到 `https://<name>.<子域>.workers.dev`
+  4. 把 `https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>` 填进 `build/config.py` 的 `SPOOFER_CONFIG_URL`，push 让 CI 重建模块（模块即接入远程配置）
+  5. 手机浏览器打开 `https://<name>.<子域>.workers.dev/?token=<LOC_TOKEN>` 地图选点、保存即生效（约 60s 缓存）；对应页面 `/enable` 恢复真实位置
+  > 注意：`SPOOFER_CONFIG_URL` 含 token，会随模块进入本公开仓库，泄露后果仅限被人改假定位（恶作剧级）；建议高熵 token
 
 ## 仓库初始化 / 同步
 

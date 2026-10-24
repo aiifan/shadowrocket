@@ -1,0 +1,107 @@
+name: deploy-worker
+
+# 定位欺骗「地图选点」Cloudflare Worker 部署（上游 mekos2772/ios-location-spoofer
+# 的 location-picker/worker，API 与其 Node 版完全兼容，数据存 KV）
+#
+# 触发：手动（Actions -> deploy-worker -> Run workflow）；
+#       每周一自动跟随上游更新（上游改了 worker 源码自动重新部署）
+#
+# 首次使用前需在 仓库 Settings -> Secrets and variables -> Actions 配置 4 个 Secrets:
+#   CLOUDFLARE_API_TOKEN  Cloudflare API Token（模板 "Edit Cloudflare Workers"）
+#   CLOUDFLARE_ACCOUNT_ID Cloudflare 账户 ID（Dashboard 右侧栏）
+#   WORKER_KV_ID          KV 命名空间 ID（dashboard Workers->KV 创建，值形如 32 位hex）
+#   LOC_TOKEN             地图选点页/接口的访问口令（自己生成的随机串，如 openssl rand -hex 24）
+# 可选 Variable（非 Secret）: WORKER_NAME 覆盖 worker 名（默认 ios-location-picker，
+#   最终访问地址为 https://<WORKER_NAME>.<账号子域>.workers.dev）
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1"   # UTC 周一 04:00 = 北京 周一 12:00
+
+concurrency:
+  group: deploy-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 前置检查（Secrets 是否齐全）
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          KV_ID: ${{ secrets.WORKER_KV_ID }}
+        run: |
+          miss=0
+          [ -z "$CF_TOKEN" ]   && echo "::error::缺少 Secret CLOUDFLARE_API_TOKEN"  && miss=1
+          [ -z "$CF_ACCOUNT" ] && echo "::error::缺少 Secret CLOUDFLARE_ACCOUNT_ID" && miss=1
+          [ -z "$KV_ID" ]      && echo "::error::缺少 Secret WORKER_KV_ID"          && miss=1
+          [ "$miss" = "1" ] && exit 1
+          echo "Secrets 齐全"
+
+      - name: 拉取上游 worker 源码
+        uses: actions/checkout@v4
+        with:
+          repository: mekos2772/ios-location-spoofer
+          ref: main
+          path: upstream
+          sparse-checkout: location-picker/worker
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 安装依赖
+        run: npm ci
+        working-directory: upstream/location-picker/worker
+
+      - name: 注入 KV id 与 Worker 名（wrangler.jsonc）
+        working-directory: upstream/location-picker/worker
+        env:
+          KV_ID: ${{ secrets.WORKER_KV_ID }}
+          WORKER_NAME: ${{ vars.WORKER_NAME }}
+        run: |
+          python3 - "$KV_ID" "${WORKER_NAME:-ios-location-picker}" <<'EOF'
+          import re, sys
+          kv_id, name = sys.argv[1], sys.argv[2]
+          p = "wrangler.jsonc"
+          s = open(p, encoding="utf-8").read()
+          s = re.sub(r'"(id|preview_id)"\s*:\s*"[0-9a-f]+"',
+                     lambda m: '"%s": "%s"' % (m.group(1), kv_id), s)
+          s = re.sub(r'"name"\s*:\s*"[^"]+"', '"name": "%s"' % name, s)
+          # KV id 与上游的校验性防呆：注入后必须已替换
+          assert kv_id in s, "KV id 注入失败"
+          open(p, "w", encoding="utf-8").write(s)
+          print("wrangler.jsonc 已注入: name=%s kv=%s...%s" % (name, kv_id[:8], kv_id[-4:]))
+          EOF
+
+      - name: 部署到 Cloudflare Workers
+        working-directory: upstream/location-picker/worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+
+      - name: 写入访问口令 TOKEN
+        working-directory: upstream/location-picker/worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          LOC_TOKEN: ${{ secrets.LOC_TOKEN }}
+        run: |
+          if [ -n "$LOC_TOKEN" ]; then
+            printf '%s' "$LOC_TOKEN" | npx wrangler secret put TOKEN
+            echo "访问口令已写入（幂等覆盖）"
+          else
+            echo "::warning::未配置 LOC_TOKEN，跳过口令写入（沿用已有值）"
+          fi
+
+      - name: 部署结果摘要
+        run: |
+          echo "=============================================="
+          echo "Worker 部署完成。访问地址："
+          echo "  地图选点页: https://${WORKER_NAME:-ios-location-picker}.<你的账号子域>.workers.dev/?token=<LOC_TOKEN>"
+          echo "  loc.json:   https://${WORKER_NAME:-ios-location-picker}.<你的账号子域>.workers.dev/loc.json?token=<LOC_TOKEN>"
+          echo "（确切域名见上方 wrangler deploy 输出；账号子域在 Cloudflare Dashboard -> Workers 右侧）"
+          echo "=============================================="
