@@ -15,7 +15,7 @@ direct.module          bucket     OK        110211
         sha1 1f3644d84778
     手工规则 0 条（源: build/buckets/direct.py）
 
-me.module              bucket     OK             4
+me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
 proxy.module           bucket     OK         28526
