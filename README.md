@@ -20,7 +20,8 @@ build/
 │   └── me.py                 #   个人规则桶 -> dist/me.module（透传，每行自带策略）
 └── templates/main.conf.template   # 主配置模板（{{URL::x.module}} 占位符）
 dist/                         # 构建产物（提交入库，供手机远程订阅）
-.github/workflows/build.yml   # 每日构建 + 变更提交
+.github/workflows/build.yml         # 每日构建 + 变更提交
+.github/workflows/deploy-worker.yml # 定位欺骗地图选点 Worker 的自动部署
 ```
 
 ## 数据来源
@@ -90,7 +91,7 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 
 ## CI（GitHub Actions）
 
-- `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**` 或 `src/**`）也会触发；手动触发：Actions → build → Run workflow
+- `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**`）也会触发；手动触发：Actions → build → Run workflow
 - `deploy-worker`：部署定位欺骗「地图选点」Cloudflare Worker（手动触发 + 每周一自动跟随上游）。首次使用：
   1. Cloudflare 侧准备：创建 API Token（模板 "Edit Cloudflare Workers"，含 KV 权限）、拿 Account ID、Dashboard 建一个 KV 命名空间记下 ID
   2. 仓库 Settings → Secrets and variables → Actions 添加 4 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）
@@ -101,7 +102,7 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 
 本仓库的 spoofer.module 保持上游原样（静态坐标）；要用地图选点，在小火箭里给模块追加 `configUrl` 参数即可。
 
-Worker 有三个地址， 注意路径区别（前缀均为 `https://<name>.<子域>.workers.dev`）：
+Worker 有三个地址，注意路径区别（前缀均为 `https://<name>.<子域>.workers.dev`）：
 
 | 用途 | 完整地址 | 说明 |
 |---|---|---|
@@ -157,7 +158,7 @@ git push -u origin main
 | 3 | skip-proxy 的银行域名等 | `build/templates/main.conf.template` | 按需 | 多几条无害的直连 |
 | 4 | Cloudflare 四个 Secrets（仅定位欺骗+地图选点用到） | fork 仓库 Settings → Secrets | 可选 | deploy-worker 会在前置检查礼貌退出；spoofer.module 照常构建（静态坐标模式），核心三桶不受影响 |
 
-**第三步**：push 改动 → build workflow 自动触发（约 15s）→ 模块里 `dist/` 已是自己的，按「使用方法」一节添加订阅即可。
+**第三步**：push 改动 → build workflow 自动触发（约 15s）→ 仓库里 `dist/` 已是自己的产物，按「使用方法」一节添加订阅即可。
 
 几个说明：
 
