@@ -44,37 +44,30 @@ dist/                         # 构建产物（提交入库，供手机远程订
 ## 使用方法（小火箭端）
 
 1. **首页** → 添加节点订阅并选中节点（PROXY 即指向它）
-2. **配置** → 右上角 + → 添加（两套任选其一）：
+2. **配置** → 右上角 + → 添加 main.conf（两套任选其一）：
 
    - jsdelivr：`https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/main.conf`
    - raw 直链：`https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/main.conf`
 
-3. **配置 → 模块** → 右上角 +，依次添加并启用，**顺序必须从上到下如下**（上 = 优先级高）。每个模块两套链接任选其一：
+3. **配置 → 模块** → 右上角 +，依次添加并启用，**顺序必须从上到下如下**（上 = 优先级高）：
 
-   **链接 A：jsdelivr（国内可达，缓存约 12h）**
-
-   | # | 模块 | 链接 |
+   | # | 模块 (dist 下文件名) | 说明 |
    |---|---|---|
-   | ① | 个人规则 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/me.module` |
-   | ② | 定位欺骗（可选） | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/spoofer.module` |
-   | ③ | 拦截 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/reject.module` |
-   | ④ | iOS 服务 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/ios.module` ← 必须在直连前 |
-   | ⑤ | 国内直连 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/direct.module` |
-   | ⑥ | 代理 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/proxy.module` |
+   | ① | `me.module` | 个人规则（置顶，覆盖一切） |
+   | ② | `spoofer.module` | 定位欺骗（可选） |
+   | ③ | `reject.module` | 拦截 |
+   | ④ | `ios.module` | iOS 服务（APNs推送+iCloud），必须在直连前 |
+   | ⑤ | `direct.module` | 国内直连 |
+   | ⑥ | `proxy.module` | 代理 |
 
-   **链接 B：raw 直链（GitHub 原始文件，更新即时，国内需代理可达）**
+   完整链接 = **前缀 + 文件名**，两套任选（可混用；jsdelivr 国内可达但缓存约 12h，raw 更新即时但需代理可达）：
 
-   | # | 模块 | 链接 |
-   |---|---|---|
-   | ① | 个人规则 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/me.module` |
-   | ② | 定位欺骗（可选） | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/spoofer.module` |
-   | ③ | 拦截 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/reject.module` |
-   | ④ | iOS 服务 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/ios.module` ← 必须在直连前 |
-   | ⑤ | 国内直连 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/direct.module` |
-   | ⑥ | 代理 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/proxy.module` |
+   ```text
+   前缀 A:  https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/
+   前缀 B:  https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/
+   拼法:    <前缀><文件名>   例: <前缀 B>me.module
+   ```
 
-   > 两套链接内容完全一致，同一模块用哪套、是否混用均可
-   > （例如只给 push.module 用 raw，让刚改的推送规则火速生效）。
    > main.conf 头部注释里嵌的是 jsdelivr 链接；想让生成产物改嵌 raw，
    > 把 build/config.py 的 URL_SCHEME 改为 "raw" 重跑构建即可。
 
