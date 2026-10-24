@@ -17,7 +17,7 @@
 # ⚠ 使用注意: 改动本桶策略(PROXY<->DIRECT)或节点出口网段变化后，
 #   系统已建立的 APNs 长连接可能"僵死"——表现为节点正常但收不到
 #   任何推送（含 X/Telegram/微信等所有远程通知）。
-#   修复: 开关一次飞行模式（约 1 分钟），强制 iOS 重建 APNs 连接
+#   修复: 开启代理后，开关一次飞行模式（约 1 分钟），强制 iOS 重建 APNs 连接
 #   走新路由。改完先想起这一步，能少排查一小时。
 DOMAIN-SUFFIX,apple-cloudkit.com,PROXY
 DOMAIN-SUFFIX,icloud-content.com,PROXY
