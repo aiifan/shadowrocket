@@ -437,18 +437,59 @@ def _inline_lines(domains, rules, policy):
     return lines
 
 
-def gm_module_text(art, domains, rules, comments=None):
-    """三桶内联模块（GM 式：注释与规则内联进 [Rule] 段，注释在规则前）。"""
+def gm_module_text(art, domains, rules, comments=None, updated=""):
+    """三桶内联模块（GM 式：注释与规则内联进 [Rule] 段，注释在规则前）。
+
+    updated: 内容驱动日期(YYYY-MM-DD)——仅当桶内容指纹变化时更新;
+    为空时(首建/无指纹)不显示日期行。total = 域名+规则总数，始终显示。
+    """
+    total = len(domains) + len(rules)
     head = [
         "#!name=%s" % (art.get("title") or art["file"].split(".")[0]),
-        "#!desc=自动聚合(源: build/buckets/)，统一策略 %s；上游明细与交集报告见 dist/report.txt"
-            % art["policy"],
+        "#!desc=自动聚合 | 策略 %s | 规则 %d 条%s | 明细见 dist/report.txt"
+            % (art["policy"], total,
+               " | 更新 " + updated if updated else ""),
         "#!category=分流",
         "",
         "[Rule]",
     ]
     body = list(comments or []) + _inline_lines(domains, rules, art["policy"])
     return "\n".join(head + body)
+
+
+_META_DIR = ROOT / ".cache"
+_META_FILE = _META_DIR / "modules_meta.json"
+
+
+def _today():
+    return time.strftime("%Y-%m-%d")
+
+
+def content_driven_date(key, fingerprint):
+    """内容驱动日期: 桶内容指纹未变 -> 沿用历史日期(确定性);
+    指纹变化/首次出现 -> 返回今天。指纹仅存本地 .cache/(gitignore)，
+    CI 每次冷启动天然是"首次" -> 以当日为基准，后续同内容不变。
+    """
+    meta = {}
+    if _META_FILE.exists():
+        try:
+            import json
+            meta = json.loads(_META_FILE.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            meta = {}
+    prev = meta.get(key)
+    if prev and prev.get("fp") == fingerprint:
+        return prev.get("date", "")
+    meta[key] = {"fp": fingerprint, "date": _today()}
+    try:
+        import json
+        _META_DIR.mkdir(exist_ok=True)
+        _META_FILE.write_text(
+            json.dumps(meta, ensure_ascii=False, indent=1, sort_keys=True),
+            encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        pass
+    return meta[key]["date"]
 
 
 # --------------------------------------------------------------------------
@@ -575,9 +616,12 @@ def build_bucket(b, offline):
 
     if b["policy"] is None:
         # 透传桶（如 me.py）: 无上游，正文=原样手工行（含注释）
+        updated = content_driven_date(fname, hashlib.sha256(
+            b["rules_text"].encode("utf-8")).hexdigest())
         text = "\n".join([
             "#!name=%s" % b["title"],
-            "#!desc=个人覆盖规则（源: build/buckets/，模块置顶=优先级最高）",
+            "#!desc=个人覆盖规则 | 优先级最高 | 规则 %d 条%s"
+                % (len(manual), " | 更新 " + updated if updated else ""),
             "#!category=分流",
             "",
             "[Rule]",
@@ -612,9 +656,14 @@ def build_bucket(b, offline):
             return "FAIL", total
     if kw_total:
         kw_drops[fname] = kw_total
+    # 内容指纹 -> 更新日期(内容驱动: 上游/手工规则无变化时沿用历史日期, 保持确定性构建)
+    fp_src = "\n".join(t for _i, t in inputs) + "\n@@bucket@@\n" + b["rules_text"]
+    fingerprint = hashlib.sha256(fp_src.encode("utf-8")).hexdigest()
+    updated = content_driven_date(fname, fingerprint)
     write_lf(DIST_DIR / fname,
              gm_module_text(dict(file=fname, title=b["title"], policy=b["policy"]),
-                            dom, rul | manual, _comment_lines(b["rules_text"])))
+                            dom, rul | manual, _comment_lines(b["rules_text"]),
+                            updated))
     rules_by_file[fname] = ({"DOMAIN-SUFFIX,%s" % d for d in dom}) | rul | manual
     emitted.add(fname)
     results.append((fname, "bucket", "OK", total,
@@ -802,6 +851,32 @@ def selftest():
     assert gm_module_text(
         dict(file="x.module", policy="DIRECT"), {"a.com"}, set()
     ).splitlines()[0] == "#!name=x"
+
+    # 模块头 desc: 规则数始终显示, 日期仅内容驱动有值时显示
+    d = gm_module_text(dict(file="x.module", policy="PROXY"),
+                       {"a.com", "b.com"}, {"IP-CIDR,1.2.3.0/24"}).splitlines()[1]
+    assert "规则 3 条" in d and "更新" not in d, d
+    d2 = gm_module_text(dict(file="x.module", policy="PROXY"),
+                        {"a.com"}, set(), updated="2026-10-24").splitlines()[1]
+    assert "规则 1 条" in d2 and "更新 2026-10-24" in d2, d2
+
+    # 内容驱动日期: 同指纹复用历史日期, 变指纹取当天(本地 .cache 记账)
+    import json as _json
+    meta_bak = _META_FILE.read_text(encoding="utf-8") if _META_FILE.exists() else None
+    try:
+        _META_FILE.unlink(missing_ok=True)
+        day1 = content_driven_date("t.module", "fp-a")
+        day2 = content_driven_date("t.module", "fp-a")     # 同指纹 -> 同日期
+        assert day1 == day2 and day1, (day1, day2)
+        day3 = content_driven_date("t.module", "fp-b")     # 变指纹 -> 重新记(同一天)
+        assert day3 == day1, "同一天内变更日期不变(仅指纹日切换)"
+        m = _json.loads(_META_FILE.read_text(encoding="utf-8"))
+        assert m["t.module"]["fp"] == "fp-b"
+    finally:
+        if meta_bak is not None:
+            _META_FILE.write_text(meta_bak, encoding="utf-8")
+        else:
+            _META_FILE.unlink(missing_ok=True)
 
     # gm 桶注释保留: RULES 里的 # 行随构建进入产物，规则前的注释块可见
     assert _comment_lines("# a\nDOMAIN,x\n   # b  \n\n") == ["# a", "   # b"]
