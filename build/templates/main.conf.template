@@ -16,12 +16,12 @@
 #      ① 个人规则:       {{URL::me.module}}
 #      ② 定位欺骗(可选): {{URL::spoofer.module}}
 #      ③ 拦截:           {{URL::reject.module}}
-#      ④ 推送(APNs):     {{URL::push.module}}   ← 必须在直连前面！
+#      ④ iOS 服务:        {{URL::ios.module}}   ← 推送(APNs)+iCloud，必须在直连前面！
 #      ⑤ 国内直连:       {{URL::direct.module}}
 #      ⑥ 代理:           {{URL::proxy.module}}
 # 【分流逻辑】
-#   ①拦截 > ④推送 > ⑤直连 > ⑥代理 > CN 的 IP 直连 > 其余走代理(FINAL)
-#   推送单独前置: 防止 init-*.push-apple.com 被 apple-cn 归为直连
+#   ①拦截 > ④iOS服务(推送/iCloud) > ⑤直连 > ⑥代理 > CN 的 IP 直连 > 其余走代理(FINAL)
+#   iOS 服务前置: 推送防 init-* 被 apple-cn 截胡; iCloud 主域显式代理(美区账号)
 #   想临时全代理/全直连，直接关掉对应模块即可（模块可随时开关）
 # 【日常维护】
 #   - 各桶规则改 build/buckets/ 下对应文件，重跑构建

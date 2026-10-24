@@ -17,7 +17,7 @@ build/
 │   ├── direct.py             #   国内直连桶 -> dist/direct.module
 │   ├── proxy.py              #   代理桶     -> dist/proxy.module
 │   ├── reject.py             #   拦截桶     -> dist/reject.module
-│   ├── push.py               #   iOS 推送桶 -> dist/push.module（手写，无上游）
+│   ├── ios.py                #   iOS 服务桶(APNs+iCloud) -> dist/ios.module（手写，无上游）
 │   └── me.py                 #   个人规则桶 -> dist/me.module（透传，每行自带策略）
 └── templates/main.conf.template   # 主配置模板（{{URL::x.module}} 占位符）
 dist/                         # 构建产物（提交入库，供手机远程订阅）
@@ -35,7 +35,7 @@ dist/                         # 构建产物（提交入库，供手机远程订
 | proxy.module | [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) OpenAI / Anthropic / Netflix / YouTube / Disney / Telegram / Apple_Domain | 分领域补充（Telegram 含官方 IP 段） |
 | reject.module | [AdGuard DNS filter](https://github.com/AdguardTeam/FiltersRegistry)（filter_15） | DNS 层广告/隐私拦截 |
 | reject.module | [pgl.yoyo.org](https://pgl.yoyo.org/adservers/) 广告域名表 | 可选补充 |
-| push.module | Apple 官方文档 APNs 章节（手写） | 推送域名（push.apple.com 等）+ 5223 端口 |
+| ios.module | Apple 官方文档（APNs 章节，手写） | 推送域名（push.apple.com 等）+ 5223 端口 + iCloud 同步主域（美区账号显式走代理） |
 | spoofer.module | [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer) | 定位欺骗，脚本已重写为自托管 |
 
 各上游的具体快照（sha1、条数、跳过数）见构建产物 `dist/report.txt`。
@@ -57,7 +57,7 @@ dist/                         # 构建产物（提交入库，供手机远程订
    | ① | 个人规则 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/me.module` |
    | ② | 定位欺骗（可选） | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/spoofer.module` |
    | ③ | 拦截 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/reject.module` |
-   | ④ | 推送 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/push.module` ← 必须在直连前 |
+   | ④ | iOS 服务 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/ios.module` ← 必须在直连前 |
    | ⑤ | 国内直连 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/direct.module` |
    | ⑥ | 代理 | `https://cdn.jsdelivr.net/gh/aiifan/shadowrocket@main/dist/proxy.module` |
 
@@ -68,7 +68,7 @@ dist/                         # 构建产物（提交入库，供手机远程订
    | ① | 个人规则 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/me.module` |
    | ② | 定位欺骗（可选） | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/spoofer.module` |
    | ③ | 拦截 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/reject.module` |
-   | ④ | 推送 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/push.module` ← 必须在直连前 |
+   | ④ | iOS 服务 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/ios.module` ← 必须在直连前 |
    | ⑤ | 国内直连 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/direct.module` |
    | ⑥ | 代理 | `https://raw.githubusercontent.com/aiifan/shadowrocket/main/dist/proxy.module` |
 
@@ -77,7 +77,7 @@ dist/                         # 构建产物（提交入库，供手机远程订
    > main.conf 头部注释里嵌的是 jsdelivr 链接；想让生成产物改嵌 raw，
    > 把 build/config.py 的 URL_SCHEME 改为 "raw" 重跑构建即可。
 
-4. 分流逻辑：拦截 > 推送 > 直连 > 代理 > CN 的 IP 直连(GEOIP) > 其余走代理(FINAL)
+4. 分流逻辑：拦截 > iOS服务(推送+iCloud) > 直连 > 代理 > CN 的 IP 直连(GEOIP) > 其余走代理(FINAL)
    想临时全代理 / 全直连，直接关闭对应模块即可。
 
 ## 构建与维护

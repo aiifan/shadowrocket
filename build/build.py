@@ -424,8 +424,8 @@ def _inline_lines(domains, rules, policy):
     return lines
 
 
-def gm_module_text(art, domains, rules):
-    """三桶内联模块（GM 式：规则全部内联进 [Rule] 段）。"""
+def gm_module_text(art, domains, rules, comments=None):
+    """三桶内联模块（GM 式：注释与规则内联进 [Rule] 段，注释在规则前）。"""
     head = [
         "#!name=%s" % (art.get("title") or art["file"].split(".")[0]),
         "#!desc=自动聚合(源: build/buckets/)，统一策略 %s；上游明细与交集报告见 dist/report.txt"
@@ -434,7 +434,8 @@ def gm_module_text(art, domains, rules):
         "",
         "[Rule]",
     ]
-    return "\n".join(head + _inline_lines(domains, rules, art["policy"]))
+    body = list(comments or []) + _inline_lines(domains, rules, art["policy"])
+    return "\n".join(head + body)
 
 
 # --------------------------------------------------------------------------
@@ -537,6 +538,15 @@ def _manual_body(text):
     return "\n".join(text.strip().splitlines())
 
 
+def _comment_lines(text):
+    """提取桶 RULES 文本里的注释行（保留原顺序；gm 桶产物内联用）。
+
+    桶内以 # 开头的行是维护者说明（改完会随构建进入产物模块，
+    小火箭模块详情里可见）；规则行由 parse_manual_rules 解析。
+    """
+    return [l.rstrip() for l in text.splitlines() if l.strip().startswith("#")]
+
+
 results, rules_by_file = [], {}
 kw_drops = {}
 emitted = set()
@@ -591,7 +601,7 @@ def build_bucket(b, offline):
         kw_drops[fname] = kw_total
     write_lf(DIST_DIR / fname,
              gm_module_text(dict(file=fname, title=b["title"], policy=b["policy"]),
-                            dom, rul | manual))
+                            dom, rul | manual, _comment_lines(b["rules_text"])))
     rules_by_file[fname] = ({"DOMAIN-SUFFIX,%s" % d for d in dom}) | rul | manual
     emitted.add(fname)
     results.append((fname, "bucket", "OK", total,
@@ -780,6 +790,13 @@ def selftest():
         dict(file="x.module", policy="DIRECT"), {"a.com"}, set()
     ).splitlines()[0] == "#!name=x"
 
+    # gm 桶注释保留: RULES 里的 # 行随构建进入产物，规则前的注释块可见
+    assert _comment_lines("# a\nDOMAIN,x\n   # b  \n\n") == ["# a", "   # b"]
+    m = gm_module_text(dict(file="x.module", policy="PROXY"), set(),
+                       {"DOMAIN-SUFFIX,a.com"}, ["# note"])
+    assert "# note" in m and "DOMAIN-SUFFIX,a.com,PROXY" in m
+    assert m.index("# note") < m.index("DOMAIN-SUFFIX,a.com"), "注释应在规则前"
+
     # 手工规则解析：gm 桶自动补策略 / 策略冲突拦截 / 透传桶三段校验
     got = parse_manual_rules(
         "# c\n\nDOMAIN-SUFFIX,qq.com\nIP-CIDR,1.2.3.0/24,no-resolve\n"
@@ -837,7 +854,7 @@ def selftest():
     assert not _valid_domain("-a.com")
     assert not _valid_domain("a b.com")
 
-    print("selftest: 5 个解析器 + 内联展开 + 手工规则解析 + 域名校验全部通过")
+    print("selftest: 5 个解析器 + 内联展开/注释保留 + 手工规则解析 + 域名校验全部通过")
 
 
 # --------------------------------------------------------------------------
