@@ -50,7 +50,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"   # wrangler 新版最低要求 Node 22（v20 会启动即退出）
 
       - name: 安装依赖
         run: npm ci
