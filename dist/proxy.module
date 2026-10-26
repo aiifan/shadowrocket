@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28530 条 | 更新 2026-10-25 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28529 条 | 更新 2026-10-26 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -12754,7 +12754,6 @@ DOMAIN-SUFFIX,icloud-content.com.cn,PROXY
 DOMAIN-SUFFIX,icloud-isupport.com,PROXY
 DOMAIN-SUFFIX,icloud-sandbox.com,PROXY
 DOMAIN-SUFFIX,icloud.ch,PROXY
-DOMAIN-SUFFIX,icloud.cn,PROXY
 DOMAIN-SUFFIX,icloud.com,PROXY
 DOMAIN-SUFFIX,icloud.com.cn,PROXY
 DOMAIN-SUFFIX,icloud.de,PROXY
