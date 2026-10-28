@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28521 条 | 更新 2026-10-27 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28528 条 | 更新 2026-10-28 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -3122,6 +3122,7 @@ DOMAIN-SUFFIX,arte.tv,PROXY
 DOMAIN-SUFFIX,artel.watch,PROXY
 DOMAIN-SUFFIX,arteldoc.com,PROXY
 DOMAIN-SUFFIX,arteldoc.tv,PROXY
+DOMAIN-SUFFIX,artificialanalysis.ai,PROXY
 DOMAIN-SUFFIX,artixlinux.org,PROXY
 DOMAIN-SUFFIX,artnudegalleries.com,PROXY
 DOMAIN-SUFFIX,artoferotica.info,PROXY
@@ -6443,6 +6444,7 @@ DOMAIN-SUFFIX,clickserve.cc-dt.com,PROXY
 DOMAIN-SUFFIX,clickserver.googleads.com,PROXY
 DOMAIN-SUFFIX,client-api.arkoselabs.com,PROXY
 DOMAIN-SUFFIX,climate-server.com,PROXY
+DOMAIN-SUFFIX,cline.bot,PROXY
 DOMAIN-SUFFIX,clinica-tibet.ru,PROXY
 DOMAIN-SUFFIX,clinical-videos.com,PROXY
 DOMAIN-SUFFIX,clinicalkey.com,PROXY
@@ -6686,6 +6688,7 @@ DOMAIN-SUFFIX,comicuniverse.org,PROXY
 DOMAIN-SUFFIX,comixzilla.com,PROXY
 DOMAIN-SUFFIX,comm-verse.com,PROXY
 DOMAIN-SUFFIX,commandandconquer.com,PROXY
+DOMAIN-SUFFIX,commandcode.ai,PROXY
 DOMAIN-SUFFIX,comments.app,PROXY
 DOMAIN-SUFFIX,commentshk.com,PROXY
 DOMAIN-SUFFIX,commerceos.com,PROXY
@@ -6738,6 +6741,7 @@ DOMAIN-SUFFIX,containersonaws.com,PROXY
 DOMAIN-SUFFIX,contechacademy.com,PROXY
 DOMAIN-SUFFIX,contentful.com,PROXY
 DOMAIN-SUFFIX,contest.com,PROXY
+DOMAIN-SUFFIX,context7.com,PROXY
 DOMAIN-SUFFIX,conviva.com,PROXY
 DOMAIN-SUFFIX,convrgencegame.com,PROXY
 DOMAIN-SUFFIX,cookiebot.com,PROXY
@@ -15885,6 +15889,7 @@ DOMAIN-SUFFIX,messytube.com,PROXY
 DOMAIN-SUFFIX,met-nude.com,PROXY
 DOMAIN-SUFFIX,meta.ai,PROXY
 DOMAIN-SUFFIX,meta.com,PROXY
+DOMAIN-SUFFIX,metaaiusercontent.com,PROXY
 DOMAIN-SUFFIX,metaaivm.com,PROXY
 DOMAIN-SUFFIX,metabora.io,PROXY
 DOMAIN-SUFFIX,metabrainz.org,PROXY
@@ -17842,6 +17847,7 @@ DOMAIN-SUFFIX,notion.site,PROXY
 DOMAIN-SUFFIX,notion.so,PROXY
 DOMAIN-SUFFIX,notionusercontent.com,PROXY
 DOMAIN-SUFFIX,nottinghampost.com,PROXY
+DOMAIN-SUFFIX,nousresearch.com,PROXY
 DOMAIN-SUFFIX,novelai.net,PROXY
 DOMAIN-SUFFIX,noveltrove.com,PROXY
 DOMAIN-SUFFIX,novids.com,PROXY
@@ -23201,6 +23207,7 @@ DOMAIN-SUFFIX,thinkdifferent.us,PROXY
 DOMAIN-SUFFIX,thinkgeek.com,PROXY
 DOMAIN-SUFFIX,thinkingtaiwan.com,PROXY
 DOMAIN-SUFFIX,thinkofliving.com,PROXY
+DOMAIN-SUFFIX,thinkorswim.com,PROXY
 DOMAIN-SUFFIX,thinkquarterly.co.uk,PROXY
 DOMAIN-SUFFIX,thinkquarterly.com,PROXY
 DOMAIN-SUFFIX,thinkwithgoogle.com,PROXY

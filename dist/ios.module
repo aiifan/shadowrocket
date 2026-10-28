@@ -1,5 +1,5 @@
 #!name=iOS 服务
-#!desc=自动聚合 | 策略 PROXY | 规则 5 条 | 更新 2026-10-27 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 5 条 | 更新 2026-10-28 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]

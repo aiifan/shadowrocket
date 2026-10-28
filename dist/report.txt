@@ -6,7 +6,7 @@
 direct.module          bucket     OK        110219
     v2fly     域名=0 规则=110193 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 fb3a1cd11ed0
+        sha1 893b1a994f12
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28521
-    v2fly     域名=0 规则=27237 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28528
+    v2fly     域名=0 规则=27244 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 651943d6feb2
+        sha1 430bb203f1bf
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28521
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        185595
-    adguard   域名=183664 规则=0 丢弃关键词=0 跳过=2218
+reject.module          bucket     OK        185954
+    adguard   域名=184021 规则=0 丢弃关键词=0 跳过=2218
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 f1b87ea31300
-    plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
+        sha1 6b29d59dfb5e
+    plain     域名=3566 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 c866e60d2760
+        sha1 1ab8b055541a
     手工规则 0 条（源: build/buckets/reject.py）
 
 location-spoofer.js    raw        OK          2136
@@ -175,7 +175,7 @@ main.conf              conf       OK            79
     - fapcat.com
     ...（仅列前 50）
 
-### DIRECT ∩ PROXY（两边都收录，direct 模块在前为先；预期为灰色双收录）: 160 条
+### DIRECT ∩ PROXY（两边都收录，direct 模块在前为先；预期为灰色双收录）: 158 条
     - 265.com
     - 2mdn-cn.net
     - 2mdn.net
