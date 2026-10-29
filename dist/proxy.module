@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28528 条 | 更新 2026-10-28 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28529 条 | 更新 2026-10-29 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -13862,6 +13862,7 @@ DOMAIN-SUFFIX,ius.io,PROXY
 DOMAIN-SUFFIX,iutunes.com,PROXY
 DOMAIN-SUFFIX,ivacy.com,PROXY
 DOMAIN-SUFFIX,ivi.ru,PROXY
+DOMAIN-SUFFIX,ivi.tv,PROXY
 DOMAIN-SUFFIX,ivicdn.tv,PROXY
 DOMAIN-SUFFIX,ivintageporn.com,PROXY
 DOMAIN-SUFFIX,ivonblog.com,PROXY
