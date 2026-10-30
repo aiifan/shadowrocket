@@ -1,5 +1,5 @@
 #!name=国内直连
-#!desc=自动聚合 | 策略 DIRECT | 规则 110536 条 | 更新 2026-10-29 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 DIRECT | 规则 110536 条 | 更新 2026-10-30 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
