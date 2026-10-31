@@ -3,10 +3,10 @@
 说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
 
 ---- 产物清单 ----
-direct.module          bucket     OK        110536
-    v2fly     域名=0 规则=110510 丢弃关键词=0 跳过=58
+direct.module          bucket     OK        110162
+    v2fly     域名=0 规则=110136 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 99d07a703dcf
+        sha1 3cd05f56fc3c
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28529
-    v2fly     域名=0 规则=27245 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28537
+    v2fly     域名=0 规则=27253 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 6ff195b61173
+        sha1 7e854be1d70d
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28529
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        186674
-    adguard   域名=184740 规则=0 丢弃关键词=0 跳过=2218
+reject.module          bucket     OK        187052
+    adguard   域名=185126 规则=0 丢弃关键词=0 跳过=2218
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 c26bffa3dc3e
-    plain     域名=3569 规则=0 丢弃关键词=0 跳过=0
+        sha1 f7845c812518
+    plain     域名=3562 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 181851786250
+        sha1 fed722bb0352
     手工规则 0 条（源: build/buckets/reject.py）
 
 location-spoofer.js    raw        OK          2136
