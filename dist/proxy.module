@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28539 条 | 更新 2026-11-01 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28548 条 | 更新 2026-11-02 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -4772,6 +4772,7 @@ DOMAIN-SUFFIX,bmi.ir,PROXY
 DOMAIN-SUFFIX,bmia.org,PROXY
 DOMAIN-SUFFIX,bmj.com,PROXY
 DOMAIN-SUFFIX,bml.info,PROXY
+DOMAIN-SUFFIX,bmonkeys.net,PROXY
 DOMAIN-SUFFIX,bmw-abudhabi.com,PROXY
 DOMAIN-SUFFIX,bmw-adventskalender.com,PROXY
 DOMAIN-SUFFIX,bmw-albania.com,PROXY
@@ -5195,6 +5196,7 @@ DOMAIN-SUFFIX,boj.or.jp,PROXY
 DOMAIN-SUFFIX,bokep.net,PROXY
 DOMAIN-SUFFIX,bokepseks.org,PROXY
 DOMAIN-SUFFIX,bokepvidz.com,PROXY
+DOMAIN-SUFFIX,boldgrid.com,PROXY
 DOMAIN-SUFFIX,bolehvpn.net,PROXY
 DOMAIN-SUFFIX,bollywoodlife.com,PROXY
 DOMAIN-SUFFIX,boltdns.net,PROXY
@@ -6528,6 +6530,7 @@ DOMAIN-SUFFIX,cloudn.me,PROXY
 DOMAIN-SUFFIX,cloudproxy.app,PROXY
 DOMAIN-SUFFIX,cloudrobotics.com,PROXY
 DOMAIN-SUFFIX,cloudvolumes.com,PROXY
+DOMAIN-SUFFIX,cloudwp.dev,PROXY
 DOMAIN-SUFFIX,cloudyzgirl.com,PROXY
 DOMAIN-SUFFIX,cloupia.com,PROXY
 DOMAIN-SUFFIX,cloupia.net,PROXY
@@ -22412,6 +22415,7 @@ DOMAIN-SUFFIX,steaminventoryhelper.com,PROXY
 DOMAIN-SUFFIX,steamladder.com,PROXY
 DOMAIN-SUFFIX,steamofporn.com,PROXY
 DOMAIN-SUFFIX,steamos.cloud,PROXY
+DOMAIN-SUFFIX,steampeek.hu,PROXY
 DOMAIN-SUFFIX,steampowered.com,PROXY
 DOMAIN-SUFFIX,steamserver.net,PROXY
 DOMAIN-SUFFIX,steamstatic.com,PROXY
@@ -24962,6 +24966,7 @@ DOMAIN-SUFFIX,vodafone.com.tr,PROXY
 DOMAIN-SUFFIX,vodafone.de,PROXY
 DOMAIN-SUFFIX,vodafone.it,PROXY
 DOMAIN-SUFFIX,vodafone.nl,PROXY
+DOMAIN-SUFFIX,vodafoneziggo.nl,PROXY
 DOMAIN-SUFFIX,voicettank.org,PROXY
 DOMAIN-SUFFIX,vokevr.com,PROXY
 DOMAIN-SUFFIX,vol.moe,PROXY
@@ -25416,7 +25421,9 @@ DOMAIN-SUFFIX,webex.com.mx,PROXY
 DOMAIN-SUFFIX,webex.de,PROXY
 DOMAIN-SUFFIX,webex.es,PROXY
 DOMAIN-SUFFIX,webex.fr,PROXY
+DOMAIN-SUFFIX,webflow-ext.com,PROXY
 DOMAIN-SUFFIX,webflow.com,PROXY
+DOMAIN-SUFFIX,webflow.io,PROXY
 DOMAIN-SUFFIX,webgata.net,PROXY
 DOMAIN-SUFFIX,webgirlsonline.net,PROXY
 DOMAIN-SUFFIX,webhosting.com,PROXY
@@ -25439,6 +25446,7 @@ DOMAIN-SUFFIX,webpkgcache.com,PROXY
 DOMAIN-SUFFIX,webrtc.org,PROXY
 DOMAIN-SUFFIX,websdr.org,PROXY
 DOMAIN-SUFFIX,webshare.io,PROXY
+DOMAIN-SUFFIX,website-files.com,PROXY
 DOMAIN-SUFFIX,website.new,PROXY
 DOMAIN-SUFFIX,webtoons.com,PROXY
 DOMAIN-SUFFIX,webtoonscorp.com,PROXY
@@ -27278,6 +27286,7 @@ DOMAIN-SUFFIX,zhuichaguoji.org,PROXY
 DOMAIN-SUFFIX,zhuzhushipin-app.com,PROXY
 DOMAIN-SUFFIX,zi.media,PROXY
 DOMAIN-SUFFIX,zibacity.com,PROXY
+DOMAIN-SUFFIX,ziggo.nl,PROXY
 DOMAIN-SUFFIX,ziglang.org,PROXY
 DOMAIN-SUFFIX,zigzag.kr,PROXY
 DOMAIN-SUFFIX,zillionk.com,PROXY
