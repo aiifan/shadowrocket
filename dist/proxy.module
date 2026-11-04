@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28548 条 | 更新 2026-11-03 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28550 条 | 更新 2026-11-04 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -4196,6 +4196,7 @@ DOMAIN-SUFFIX,beget.app,PROXY
 DOMAIN-SUFFIX,beget.cloud,PROXY
 DOMAIN-SUFFIX,beget.com,PROXY
 DOMAIN-SUFFIX,beget.de,PROXY
+DOMAIN-SUFFIX,beget.email,PROXY
 DOMAIN-SUFFIX,beget.hosting,PROXY
 DOMAIN-SUFFIX,beget.pro,PROXY
 DOMAIN-SUFFIX,beget.ru,PROXY
@@ -4419,6 +4420,7 @@ DOMAIN-SUFFIX,bild.de,PROXY
 DOMAIN-SUFFIX,bili2.cc,PROXY
 DOMAIN-SUFFIX,bili888.com,PROXY
 DOMAIN-SUFFIX,bili999.com,PROXY
+DOMAIN-SUFFIX,bilibili.tv,PROXY
 DOMAIN-SUFFIX,bilinovel.com,PROXY
 DOMAIN-SUFFIX,biliplus.com,PROXY
 DOMAIN-SUFFIX,biliworld.com,PROXY
