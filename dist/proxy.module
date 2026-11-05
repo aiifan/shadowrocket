@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28550 条 | 更新 2026-11-04 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28555 条 | 更新 2026-11-05 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -14983,6 +14983,9 @@ DOMAIN-SUFFIX,lilaoshibushinilaoshi.com,PROXY
 DOMAIN-SUFFIX,lilhumpers.com,PROXY
 DOMAIN-SUFFIX,liliav.com,PROXY
 DOMAIN-SUFFIX,lilith-soft.com,PROXY
+DOMAIN-SUFFIX,limbuscompany.global,PROXY
+DOMAIN-SUFFIX,limbuscompanyapi.com,PROXY
+DOMAIN-SUFFIX,limbuscompanycdn.org,PROXY
 DOMAIN-SUFFIX,limedia.tw,PROXY
 DOMAIN-SUFFIX,limelight.com,PROXY
 DOMAIN-SUFFIX,limer.tw,PROXY
@@ -19881,6 +19884,7 @@ DOMAIN-SUFFIX,projectbaseline.com,PROXY
 DOMAIN-SUFFIX,projectcircuitbreaker.com,PROXY
 DOMAIN-SUFFIX,projecteuclid.org,PROXY
 DOMAIN-SUFFIX,projectjav.com,PROXY
+DOMAIN-SUFFIX,projectmoon.studio,PROXY
 DOMAIN-SUFFIX,projectmurphy.net,PROXY
 DOMAIN-SUFFIX,projectpoint.com,PROXY
 DOMAIN-SUFFIX,projectpoint.net,PROXY
@@ -21737,6 +21741,7 @@ DOMAIN-SUFFIX,skills.sh,PROXY
 DOMAIN-SUFFIX,skillshare.com,PROXY
 DOMAIN-SUFFIX,skimtube.com,PROXY
 DOMAIN-SUFFIX,skinstrip.net,PROXY
+DOMAIN-SUFFIX,skinswap.com,PROXY
 DOMAIN-SUFFIX,skokka.com,PROXY
 DOMAIN-SUFFIX,sksarab.top,PROXY
 DOMAIN-SUFFIX,skunkgirl.cc,PROXY
