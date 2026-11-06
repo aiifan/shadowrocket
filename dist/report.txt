@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28555
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        189821
-    adguard   域名=187894 规则=0 丢弃关键词=0 跳过=2220
+reject.module          bucket     OK        191211
+    adguard   域名=189284 规则=0 丢弃关键词=0 跳过=2223
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 412b932f6c66
-    plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
+        sha1 fb95a3db3e00
+    plain     域名=3564 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 403d5adbf0c4
+        sha1 e9bc80e34c8f
     手工规则 0 条（源: build/buckets/reject.py）
 
 location-spoofer.js    raw        OK          2136
@@ -69,7 +69,7 @@ main.conf              conf       OK            79
     proxy.module: 7
 
 ---- 交集冲突（只报告，处置见 conf 优先级与 me.list 覆盖） ----
-### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 282 条
+### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 281 条
     - 003store.com
     - 165tchuang.com
     - 1l1.cc
