@@ -3,10 +3,10 @@
 说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
 
 ---- 产物清单 ----
-direct.module          bucket     OK        110165
-    v2fly     域名=0 规则=110139 丢弃关键词=0 跳过=58
+direct.module          bucket     OK        110164
+    v2fly     域名=0 规则=110138 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 4a19ea651b40
+        sha1 a8e3c001e97a
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28555
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        191211
-    adguard   域名=189284 规则=0 丢弃关键词=0 跳过=2223
+reject.module          bucket     OK        191491
+    adguard   域名=189573 规则=0 丢弃关键词=0 跳过=2212
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 fb95a3db3e00
-    plain     域名=3564 规则=0 丢弃关键词=0 跳过=0
+        sha1 f1687bb71868
+    plain     域名=3559 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 e9bc80e34c8f
+        sha1 08302bff331b
     手工规则 0 条（源: build/buckets/reject.py）
 
 location-spoofer.js    raw        OK          2136
