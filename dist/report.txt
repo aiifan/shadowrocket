@@ -18,13 +18,13 @@ direct.module          bucket     OK        110164
 ios.module             bucket     OK             5
     手工规则 5 条（源: build/buckets/ios.py）
 
-me.module              bucket     OK             3
+me.module              bucket     OK             6
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28555
-    v2fly     域名=0 规则=27271 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28559
+    v2fly     域名=0 规则=27275 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 06487d1fa7f3
+        sha1 c9803825dc34
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28555
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        191491
-    adguard   域名=189573 规则=0 丢弃关键词=0 跳过=2212
+reject.module          bucket     OK        191849
+    adguard   域名=189930 规则=0 丢弃关键词=0 跳过=2212
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 f1687bb71868
-    plain     域名=3559 规则=0 丢弃关键词=0 跳过=0
+        sha1 c31332a30a5a
+    plain     域名=3560 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 08302bff331b
+        sha1 bdcc424141d3
     手工规则 0 条（源: build/buckets/reject.py）
 
 location-spoofer.js    raw        OK          2136
@@ -63,7 +63,7 @@ location-spoofer.js    raw        OK          2136
 spoofer.module         module     OK             9
     js 链接重写 1 处 -> location-spoofer.js
 
-main.conf              conf       OK            79
+main.conf              conf       OK            81
 
 ---- 自动源 DOMAIN-KEYWORD 丢弃统计（铁律，仅 me.list 允许） ----
     proxy.module: 7

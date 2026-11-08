@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28555 条 | 更新 2026-11-07 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28559 条 | 更新 2026-11-08 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -282,6 +282,7 @@ DOMAIN,holoxx.f5.si,PROXY
 DOMAIN,homebrew.bintray.com,PROXY
 DOMAIN,hpefonts.s3.amazonaws.com,PROXY
 DOMAIN,hpstore.corpmerchandise.com,PROXY
+DOMAIN,http-intake.logs.us5.datadoghq.com,PROXY
 DOMAIN,hub.slarker.me,PROXY
 DOMAIN,hulu.playback.edge.bamgrid.com,PROXY
 DOMAIN,i.jeded.com,PROXY
@@ -370,6 +371,7 @@ DOMAIN,ntppool2.time.nl,PROXY
 DOMAIN,nurofensk-prod-env.eu-west-1.elasticbeanstalk.com,PROXY
 DOMAIN,nvidia.custhelp.com,PROXY
 DOMAIN,nvidia.tt.omtrdc.net,PROXY
+DOMAIN,o1158394.ingest.us.sentry.io,PROXY
 DOMAIN,ocsp.microsoft.com,PROXY
 DOMAIN,officecdn-microsoft-com.akamaized.net,PROXY
 DOMAIN,onekey.zendesk.com,PROXY
@@ -399,6 +401,7 @@ DOMAIN,practivate.adobe.com,PROXY
 DOMAIN,prd-priconne-redive.akamaized.net,PROXY
 DOMAIN,preprod-publicca.googleapis.com,PROXY
 DOMAIN,prodforza.blob.core.windows.net,PROXY
+DOMAIN,production-copilot-host-westus.webpubsub.azure.com,PROXY
 DOMAIN,production-openaicom-storage.azureedge.net,PROXY
 DOMAIN,productionresultssa0.blob.core.windows.net,PROXY
 DOMAIN,productionresultssa1.blob.core.windows.net,PROXY
@@ -11495,6 +11498,7 @@ DOMAIN-SUFFIX,greginhollywood.com,PROXY
 DOMAIN-SUFFIX,gridaware.app,PROXY
 DOMAIN-SUFFIX,grindr.com,PROXY
 DOMAIN-SUFFIX,grok.com,PROXY
+DOMAIN-SUFFIX,grokbot.com,PROXY
 DOMAIN-SUFFIX,grokipedia.com,PROXY
 DOMAIN-SUFFIX,grooby.com,PROXY
 DOMAIN-SUFFIX,groq.com,PROXY
