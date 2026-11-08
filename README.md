@@ -11,7 +11,7 @@
 ```
 build/
 ├── build.py                  # 构建引擎（拉取→解析→合并→防线校验→产出）
-├── config.py                 # 全局配置（REPO/URL_SCHEME）+ 定位欺骗特殊产物
+├── config.py                 # 全局配置（REPO/URL_SCHEME）+ 特殊产物
 ├── buckets/                  # 规则桶，一桶一文件（加策略=复制一个文件）
 │   ├── direct.py             #   国内直连桶 -> dist/direct.module
 │   ├── proxy.py              #   代理桶     -> dist/proxy.module
@@ -21,7 +21,6 @@ build/
 └── templates/main.conf.template   # 主配置模板（{{URL::x.module}} 占位符）
 dist/                         # 构建产物（提交入库，供手机远程订阅）
 .github/workflows/build.yml         # 每日构建 + 变更提交
-.github/workflows/deploy-worker.yml # 定位欺骗地图选点 Worker 的自动部署
 ```
 
 ## 数据来源
@@ -36,8 +35,6 @@ dist/                         # 构建产物（提交入库，供手机远程订
 | reject.module | [AdGuard DNS filter](https://github.com/AdguardTeam/FiltersRegistry)（filter_15） | DNS 层广告/隐私拦截 |
 | reject.module | [pgl.yoyo.org](https://pgl.yoyo.org/adservers/) 广告域名表 | 可选补充 |
 | ios.module | Apple 官方文档（APNs 章节，手写） | 推送域名（push.apple.com 等）+ 5223 端口 + iCloud 同步主域（美区账号显式走代理） |
-| spoofer.module | [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer) | 定位欺骗，脚本已重写为自托管 |
-| 地图选点 Worker | [mekos2772/ios-location-spoofer](https://github.com/mekos2772/ios-location-spoofer) `location-picker/worker`（Cloudflare Worker + KV） | 网页地图选点，API 与其 Node 版兼容；由 `.github/workflows/deploy-worker.yml` 自动部署 |
 
 各上游的具体快照（sha1、条数、跳过数）见构建产物 `dist/report.txt`。
 
@@ -54,11 +51,10 @@ dist/                         # 构建产物（提交入库，供手机远程订
    | # | 模块 (dist 下文件名) | 说明 |
    |---|---|---|
    | ① | `me.module` | 个人规则（置顶，覆盖一切） |
-   | ② | `spoofer.module` | 定位欺骗（可选） |
-   | ③ | `reject.module` | 拦截 |
-   | ④ | `ios.module` | iOS 服务（APNs推送+iCloud），必须在直连前 |
-   | ⑤ | `direct.module` | 国内直连 |
-   | ⑥ | `proxy.module` | 代理 |
+   | ② | `reject.module` | 拦截 |
+   | ③ | `ios.module` | iOS 服务（APNs推送+iCloud），必须在直连前 |
+   | ④ | `direct.module` | 国内直连 |
+   | ⑤ | `proxy.module` | 代理 |
 
    完整链接 = **前缀 + 文件名**，两套任选（可混用；jsdelivr 国内可达但缓存约 12h，raw 更新即时但需代理可达）：
 
@@ -92,39 +88,6 @@ python build/build.py --selftest  # 仅跑内置解析器自测
 ## CI（GitHub Actions）
 
 - `build`：每日北京时间 10:30 自动构建（cron `30 2 * * *`），产物有变化才提交，无空提交；push 到 main（改动 `build/**`）也会触发；手动触发：Actions → build → Run workflow
-- `deploy-worker`：部署定位欺骗「地图选点」Cloudflare Worker（手动触发 + 每周一自动跟随上游）。首次使用：
-  1. Cloudflare 侧准备：创建 API Token（模板 "Edit Cloudflare Workers"，含 KV 权限）、拿 Account ID、Dashboard 建一个 KV 命名空间记下 ID
-  2. 仓库 Settings → Secrets and variables → Actions 添加 4 个 Secrets：`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` / `WORKER_KV_ID` / `LOC_TOKEN`（自生成随机口令）
-  3. Actions → deploy-worker → Run workflow，从输出拿到 `https://<name>.<子域>.workers.dev`
-  4. 手机 Safari 打开 `https://<name>.<子域>.workers.dev/?token=<LOC_TOKEN>` 地图选点、保存即生效（约 60s 缓存）；对应页面 `/enable` 恢复真实位置
-
-### 地图选点接入小火箭（手机端手动加参数，仓库零改动）
-
-本仓库的 spoofer.module 保持上游原样（静态坐标）；要用地图选点，在小火箭里给模块追加 `configUrl` 参数即可。
-
-Worker 有三个地址，注意路径区别（前缀均为 `https://<name>.<子域>.workers.dev`）：
-
-| 用途 | 完整地址 | 说明 |
-|---|---|---|
-| 地图选点页 | `…/?token=<LOC_TOKEN>` | 手机 Safari 打开，点图钉→保存定位 |
-| 坐标 JSON | `…/loc.json?token=<LOC_TOKEN>` | 浏览器打开验证经纬度是否已变化 |
-| 模块 configUrl | `…/loc.json?token=<LOC_TOKEN>` | **注意带 `/loc.json`**，模块追加的与上同 |
-
-操作步骤：
-
-1. 模块页 → 点开 `iOS Location Spoofer` → 找到 `[Script]` 行（或"编辑"入口）
-2. 在该行末尾 `debug=false` 后追加（注意前面加 `&`，**路径含 `/loc.json`**）：
-
-   ```text
-   &configUrl=https://<name>.<子域>.workers.dev/loc.json?token=<LOC_TOKEN>
-   ```
-
-   即 argument 段变为 `...&debug=false&configUrl=https://.../loc.json?token=...`
-3. 保存后开关一次模块。之后地图页选点保存，约 60s 内手机定位跟随（模块本地的静态坐标被远程配置覆盖）；想去掉地图选点就删掉追加的这段
-4. **模块更新会把手动加的参数冲掉**：小火箭更新 spoofer.module 后需重新追加一次 `&configUrl=...`（所以更新流程 = 删参数 → 更新模块 → 再加参数）
-
-> 设计说明：含 token 的地址只存在你手机和 Cloudflare 上，仓库文件/CI/Secrets 全程不经手；升级模块只需删参数→更新模块→再加参数，或干脆用小火箭的本地覆盖功能
-> （新版 iOS Location Spoofer 模块亦支持 Loon 式远程配置 URL 设置，见上游 README）。
 
 ## 仓库初始化 / 同步
 
@@ -156,15 +119,12 @@ git push -u origin main
 | 1 | `REPO = "aiifan/shadowrocket"` 换成自己的 `用户名/仓库名` | `build/config.py` | **必须** | main.conf 与模块引用的 URL 仍指向本仓库——手机下载的还是原作者的产物，自己改什么都不生效 |
 | 2 | 自用域名规则 | `build/buckets/me.py` | 按需 | 沿用原作者的三条自用域名（无功能损害） |
 | 3 | skip-proxy 的银行域名等 | `build/templates/main.conf.template` | 按需 | 多几条无害的直连 |
-| 4 | Cloudflare 四个 Secrets（仅定位欺骗+地图选点用到） | fork 仓库 Settings → Secrets | 可选 | deploy-worker 会在前置检查礼貌退出；spoofer.module 照常构建（静态坐标模式），核心三桶不受影响 |
 
 **第三步**：push 改动 → build workflow 自动触发（约 15s）→ 仓库里 `dist/` 已是自己的产物，按「使用方法」一节添加订阅即可。
 
 几个说明：
 
-- 定位欺骗整个是**可选件**：不配 Secrets 自动降级，不拖累核心分流；
 - 构建自包含：上游数据源全是公开项目，与谁 fork 无关；GitHub Actions 免费额度跑本流水线（每天约 2~3 分钟）完全够用；
 - fork 后 `BRANCH = "main"` 一般不用动，除非你把默认分支改名了；
-- 想自定义 Worker 名称（默认 `ios-location-picker`）：Settings → Secrets and variables → Actions → Variables 加 `WORKER_NAME`。
 
 > AI生成

@@ -14,13 +14,12 @@
 #   3. 配置 -> 模块 -> 右上角 +，依次添加下面这些并启用，
 #      顺序必须与下同（上=优先）:
 #      ① 个人规则:       {{URL::me.module}}
-#      ② 定位欺骗(可选): {{URL::spoofer.module}}
-#      ③ 拦截:           {{URL::reject.module}}
-#      ④ iOS 服务:        {{URL::ios.module}}   ← 推送(APNs)+iCloud，必须在直连前面！
-#      ⑤ 国内直连:       {{URL::direct.module}}
-#      ⑥ 代理:           {{URL::proxy.module}}
+#      ② 拦截:           {{URL::reject.module}}
+#      ③ iOS 服务:        {{URL::ios.module}}   ← 推送(APNs)+iCloud，必须在直连前面！
+#      ④ 国内直连:       {{URL::direct.module}}
+#      ⑤ 代理:           {{URL::proxy.module}}
 # 【分流逻辑】
-#   ①拦截 > ④iOS服务(推送/iCloud) > ⑤直连 > ⑥代理 > CN 的 IP 直连 > 其余走代理(FINAL)
+#   ②拦截 > ③iOS服务(推送/iCloud) > ④直连 > ⑤代理 > CN 的 IP 直连 > 其余走代理(FINAL)
 #   iOS 服务前置: 推送防 init-* 被 apple-cn 截胡; iCloud 主域显式代理(美区账号)
 #   想临时全代理/全直连，直接关掉对应模块即可（模块可随时开关）
 # 【日常维护】
@@ -73,9 +72,3 @@ IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
 # 国内 IP 直连（无域名流量/列表外国内站） -> 其余全部走代理
 GEOIP,CN,DIRECT
 FINAL,PROXY
-
-[MITM]
-# 定位欺骗所需解密域名 —— 构建时自动从上游 spoofer 模块提取注入（上游增改域名自动跟随）
-# 与 spoofer.module 的 %APPEND% 为并集关系，重复声明无害
-# 注意: iOS 侧仍需 设置->HTTPS解密 开启并安装信任 CA 证书，配置代替不了这一步
-hostname = {{MITM::spoofer.module}}

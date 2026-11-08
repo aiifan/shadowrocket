@@ -28,24 +28,7 @@ SCRIPT_URL_SCHEME = "raw"
 # ---------------------------------------------------------------------------
 # 特殊产物（不走三桶机制）
 # ---------------------------------------------------------------------------
-_MS = "https://raw.githubusercontent.com/mekos2772/ios-location-spoofer/main"
-
-# 定位欺骗「地图选点」远程配置：本仓库不改动模块 argument（保持上游原样），
-# 地图选点通过在小火箭里给模块追加 configUrl 参数启用，见 README「地图选点」一节。
-# Worker 的部署方式见 .github/workflows/deploy-worker.yml
-EXTRA_ARTIFACTS = [
-    # 定位欺骗脚本（原样分发，spoofer.module 依赖它，顺序必须在前）
-    dict(
-        file="location-spoofer.js", kind="raw", optional=True,
-        must_contain=["wloc"],
-        inputs=[dict(url=_MS + "/location-spoofer.js", parser="raw")],
-    ),
-    # 定位欺骗模块（拷贝上游 + 脚本 URL 重写为自托管，独立开关）
-    dict(
-        file="spoofer.module", kind="module", optional=True, policy="定位欺骗(独立模块)",
-        rewrite_to="location-spoofer.js",
-        rewrite_js=r"https?://[^\s\"'<>]+/location-spoofer\.js",
-        must_contain=["gs-loc.apple.com"],
-        inputs=[dict(url=_MS + "/ios-location-spoofer.sgmodule", parser="module")],
-    ),
-]
+# 定位欺骗（spoofer）已停用：上游失效 + 主配置 [MITM] 段已移除，
+# 不再构建/分发 spoofer.module 与 location-spoofer.js。
+# 如需恢复，从 git 历史找回本段与模板 [MITM] 段即可。
+EXTRA_ARTIFACTS = []
