@@ -57,13 +57,7 @@ reject.module          bucket     OK        191849
         sha1 bdcc424141d3
     手工规则 0 条（源: build/buckets/reject.py）
 
-location-spoofer.js    raw        OK          2136
-    按原样分发 68082 字节
-
-spoofer.module         module     OK             9
-    js 链接重写 1 处 -> location-spoofer.js
-
-main.conf              conf       OK            81
+main.conf              conf       OK            74
 
 ---- 自动源 DOMAIN-KEYWORD 丢弃统计（铁律，仅 me.list 允许） ----
     proxy.module: 7
