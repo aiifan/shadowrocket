@@ -18,7 +18,7 @@ direct.module          bucket     OK        110164
 ios.module             bucket     OK             5
     手工规则 5 条（源: build/buckets/ios.py）
 
-me.module              bucket     OK             6
+me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
 proxy.module           bucket     OK         28559
@@ -57,7 +57,7 @@ reject.module          bucket     OK        189606
         sha1 bdcc424141d3
     手工规则 0 条（源: build/buckets/reject.py）
 
-main.conf              conf       OK            74
+main.conf              conf       OK            72
 
 ---- 自动源 DOMAIN-KEYWORD 丢弃统计（铁律，仅 me.list 允许） ----
     proxy.module: 7
