@@ -18,11 +18,6 @@ DOMAIN-SUFFIX,aiifan.pp.ua,DIRECT
 DOMAIN-SUFFIX,aiifan.dpdns.org,DIRECT
 DOMAIN-SUFFIX,yamu.com,DIRECT
 
-# --- 局域网走代理（远程访问指定内网网段，置顶优先） ---
-IP-CIDR,10.0.0.0/24,PROXY,no-resolve
-IP-CIDR,10.10.10.0/24,PROXY,no-resolve
-IP-CIDR,192.168.9.0/24,PROXY,no-resolve
-
 # --- 误判纠正示例: 某国内域名被分到代理，强制直连 ---
 # DOMAIN-SUFFIX,example.com.cn,DIRECT
 
