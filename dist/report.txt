@@ -3,10 +3,10 @@
 说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
 
 ---- 产物清单 ----
-direct.module          bucket     OK        110164
-    v2fly     域名=0 规则=110138 丢弃关键词=0 跳过=58
+direct.module          bucket     OK        110165
+    v2fly     域名=0 规则=110139 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 a8e3c001e97a
+        sha1 d7322a7ad83a
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28559
-    v2fly     域名=0 规则=27275 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28564
+    v2fly     域名=0 规则=27280 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 c9803825dc34
+        sha1 128be92bfb95
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28559
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        189606
-    adguard   域名=187687 规则=0 丢弃关键词=0 跳过=2212
+reject.module          bucket     OK        191433
+    adguard   域名=189513 规则=0 丢弃关键词=0 跳过=2224
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 2dc924950669
-    plain     域名=3560 规则=0 丢弃关键词=0 跳过=0
+        sha1 507c94ccfd47
+    plain     域名=3561 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 bdcc424141d3
+        sha1 0fb808d1eed7
     手工规则 0 条（源: build/buckets/reject.py）
 
 main.conf              conf       OK            72

@@ -1,5 +1,5 @@
 #!name=国内直连
-#!desc=自动聚合 | 策略 DIRECT | 规则 110164 条 | 更新 2026-11-10 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 DIRECT | 规则 110165 条 | 更新 2026-11-11 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -67663,6 +67663,7 @@ DOMAIN-SUFFIX,nhzj.com,DIRECT
 DOMAIN-SUFFIX,nhzs.com,DIRECT
 DOMAIN-SUFFIX,ni8.com,DIRECT
 DOMAIN-SUFFIX,ni93.com,DIRECT
+DOMAIN-SUFFIX,nia-teams.com,DIRECT
 DOMAIN-SUFFIX,nianchu.net,DIRECT
 DOMAIN-SUFFIX,nianhuawan.com,DIRECT
 DOMAIN-SUFFIX,niankawang.com,DIRECT
