@@ -3,10 +3,10 @@
 说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
 
 ---- 产物清单 ----
-direct.module          bucket     OK        110165
-    v2fly     域名=0 规则=110139 丢弃关键词=0 跳过=58
+direct.module          bucket     OK        110264
+    v2fly     域名=0 规则=110238 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 d7322a7ad83a
+        sha1 1cd5d004a090
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28564
-    v2fly     域名=0 规则=27280 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28565
+    v2fly     域名=0 规则=27281 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 128be92bfb95
+        sha1 c71b42a87d7b
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28564
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        192251
-    adguard   域名=190332 规则=0 丢弃关键词=0 跳过=2225
+reject.module          bucket     OK        192630
+    adguard   域名=190710 规则=0 丢弃关键词=0 跳过=2225
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 efd826f8ac9b
-    plain     域名=3563 规则=0 丢弃关键词=0 跳过=0
+        sha1 764c66b9d6f3
+    plain     域名=3562 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 e371cb49561d
+        sha1 5967728d38db
     手工规则 0 条（源: build/buckets/reject.py）
 
 main.conf              conf       OK            72
@@ -63,7 +63,7 @@ main.conf              conf       OK            72
     proxy.module: 7
 
 ---- 交集冲突（只报告，处置见 conf 优先级与 me.list 覆盖） ----
-### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 282 条
+### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 284 条
     - 003store.com
     - 165tchuang.com
     - 1l1.cc

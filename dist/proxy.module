@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28564 条 | 更新 2026-11-13 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28565 条 | 更新 2026-11-14 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -1182,6 +1182,7 @@ DOMAIN-SUFFIX,51lieqi.com,PROXY
 DOMAIN-SUFFIX,51luoben.com,PROXY
 DOMAIN-SUFFIX,51luoli.info,PROXY
 DOMAIN-SUFFIX,51mh.app,PROXY
+DOMAIN-SUFFIX,51papaya.com,PROXY
 DOMAIN-SUFFIX,51pincha.cc,PROXY
 DOMAIN-SUFFIX,51tuqiang.com,PROXY
 DOMAIN-SUFFIX,520aa.tv,PROXY
