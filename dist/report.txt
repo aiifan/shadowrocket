@@ -3,10 +3,10 @@
 说明: 本文件不含时间戳，上游无变化时重复构建逐字节相同。
 
 ---- 产物清单 ----
-direct.module          bucket     OK        110215
-    v2fly     域名=0 规则=110189 丢弃关键词=0 跳过=58
+direct.module          bucket     OK        110219
+    v2fly     域名=0 规则=110193 丢弃关键词=0 跳过=58
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/direct-list.txt
-        sha1 da6a847cab30
+        sha1 709968e29cc8
     v2fly     域名=0 规则=165 丢弃关键词=0 跳过=0
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/apple-cn.txt
         sha1 f7857c840792
@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28565
-    v2fly     域名=0 规则=27281 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28570
+    v2fly     域名=0 规则=27286 丢弃关键词=0 跳过=222
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 c71b42a87d7b
+        sha1 d8333092def8
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,10 +48,10 @@ proxy.module           bucket     OK         28565
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        193025
-    adguard   域名=191104 规则=0 丢弃关键词=0 跳过=2225
+reject.module          bucket     OK        191516
+    adguard   域名=189595 规则=0 丢弃关键词=0 跳过=2225
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 874332740a5d
+        sha1 f7d80500a944
     plain     域名=3564 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
         sha1 6b5eb60317fe

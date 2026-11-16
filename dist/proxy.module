@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28565 条 | 更新 2026-11-15 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28570 条 | 更新 2026-11-16 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -90,6 +90,7 @@ DOMAIN,bnetproduct-a.akamaihd.net,PROXY
 DOMAIN,bnetshopus.akamaized.net,PROXY
 DOMAIN,brightcove.imgix.net,PROXY
 DOMAIN,browser-intake-datadoghq.com,PROXY
+DOMAIN,builds.dotnet.microsoft.com,PROXY
 DOMAIN,bybit-exchange.github.io,PROXY
 DOMAIN,bybit.ada.support,PROXY
 DOMAIN,c.ppy.sh,PROXY
@@ -193,6 +194,7 @@ DOMAIN,dlmobilegarena-a.akamaihd.net,PROXY
 DOMAIN,dmqdd6hw24ucf.cloudfront.net,PROXY
 DOMAIN,docker-images-prod.6aa30f8b08e16409b46e0173d6de2f56.r2.cloudflarestorage.com,PROXY
 DOMAIN,docker-pinata-support.s3.amazonaws.com,PROXY
+DOMAIN,dotnetcli.trafficmanager.net,PROXY
 DOMAIN,doy2mn9upadnk.cloudfront.net,PROXY
 DOMAIN,dqd0jw5gvbchn.cloudfront.net,PROXY
 DOMAIN,dqrpb9wgowsf5.cloudfront.net,PROXY
@@ -570,6 +572,7 @@ DOMAIN,steamusercontent-a.akamaihd.net,PROXY
 DOMAIN,steamuserimages-a.akamaihd.net,PROXY
 DOMAIN,steamvideo-a.akamaihd.net,PROXY
 DOMAIN,straitsx-826709081262441084-b790f87a2ae6fd417434295.freshchat.com,PROXY
+DOMAIN,sundry-star-net-geo.trafficmanager.net,PROXY
 DOMAIN,supercell.helpshift.com,PROXY
 DOMAIN,supercell.zendesk.com,PROXY
 DOMAIN,t.ssp.hinet.net,PROXY
@@ -7227,6 +7230,7 @@ DOMAIN-SUFFIX,dealtree.org,PROXY
 DOMAIN-SUFFIX,deasians.com,PROXY
 DOMAIN-SUFFIX,debank.com,PROXY
 DOMAIN-SUFFIX,debian.org,PROXY
+DOMAIN-SUFFIX,debot.ai,PROXY
 DOMAIN-SUFFIX,debug.com,PROXY
 DOMAIN-SUFFIX,debugproject.com,PROXY
 DOMAIN-SUFFIX,decentr.net,PROXY
@@ -20482,6 +20486,7 @@ DOMAIN-SUFFIX,reiporno.com,PROXY
 DOMAIN-SUFFIX,relateiq.com,PROXY
 DOMAIN-SUFFIX,religionnews.com,PROXY
 DOMAIN-SUFFIX,remirepo.net,PROXY
+DOMAIN-SUFFIX,remna.dev,PROXY
 DOMAIN-SUFFIX,remna.st,PROXY
 DOMAIN-SUFFIX,rencapbank.ru,PROXY
 DOMAIN-SUFFIX,renchead.com,PROXY
