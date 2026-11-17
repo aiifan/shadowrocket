@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28570 条 | 更新 2026-11-16 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28572 条 | 更新 2026-11-17 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -7047,6 +7047,7 @@ DOMAIN-SUFFIX,cybertrust.co.jp,PROXY
 DOMAIN-SUFFIX,cybertrust.ne.jp,PROXY
 DOMAIN-SUFFIX,cyberx.com,PROXY
 DOMAIN-SUFFIX,cygames.co.jp,PROXY
+DOMAIN-SUFFIX,cygames.com,PROXY
 DOMAIN-SUFFIX,cygames.jp,PROXY
 DOMAIN-SUFFIX,cygwin.com,PROXY
 DOMAIN-SUFFIX,cylink.pro,PROXY
@@ -26824,6 +26825,7 @@ DOMAIN-SUFFIX,yavtube.com,PROXY
 DOMAIN-SUFFIX,yaya.cyou,PROXY
 DOMAIN-SUFFIX,yayadizhi.xyz,PROXY
 DOMAIN-SUFFIX,yazhouse8.com,PROXY
+DOMAIN-SUFFIX,yb-payment.ru,PROXY
 DOMAIN-SUFFIX,yccdn.ru,PROXY
 DOMAIN-SUFFIX,yclients.com,PROXY
 DOMAIN-SUFFIX,ycombinator.com,PROXY
