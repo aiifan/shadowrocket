@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28572 条 | 更新 2026-11-18 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28572 条 | 更新 2026-11-19 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -8654,6 +8654,7 @@ DOMAIN-SUFFIX,elephanttube.com,PROXY
 DOMAIN-SUFFIX,elephanttubenew.com,PROXY
 DOMAIN-SUFFIX,elevenlabs.com,PROXY
 DOMAIN-SUFFIX,elevenlabs.io,PROXY
+DOMAIN-SUFFIX,elevenlabsusercontent.com,PROXY
 DOMAIN-SUFFIX,elgaronline.com,PROXY
 DOMAIN-SUFFIX,elgoog.im,PROXY
 DOMAIN-SUFFIX,elifesciences.org,PROXY
@@ -26790,7 +26791,6 @@ DOMAIN-SUFFIX,yandexdataschool.ru,PROXY
 DOMAIN-SUFFIX,yandexgo.com,PROXY
 DOMAIN-SUFFIX,yandexlyceum.ru,PROXY
 DOMAIN-SUFFIX,yandexwebcache.net,PROXY
-DOMAIN-SUFFIX,yandexwebcache.org,PROXY
 DOMAIN-SUFFIX,yango-b2b.com,PROXY
 DOMAIN-SUFFIX,yango-team.com,PROXY
 DOMAIN-SUFFIX,yango-tech.com,PROXY
