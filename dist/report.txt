@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28591
-    v2fly     域名=0 规则=27177 丢弃关键词=0 跳过=222
+proxy.module           bucket     OK         28612
+    v2fly     域名=0 规则=27198 丢弃关键词=0 跳过=224
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 db5c2e770037
+        sha1 518175b874be
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,10 +48,10 @@ proxy.module           bucket     OK         28591
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        193396
-    adguard   域名=191485 规则=0 丢弃关键词=0 跳过=2225
+reject.module          bucket     OK        193452
+    adguard   域名=191541 规则=0 丢弃关键词=0 跳过=2225
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 42d9357f189d
+        sha1 89660e36b184
     plain     域名=3555 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
         sha1 b3e3cc4551dc
@@ -63,7 +63,7 @@ main.conf              conf       OK            72
     proxy.module: 7
 
 ---- 交集冲突（只报告，处置见 conf 优先级与 me.list 覆盖） ----
-### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 284 条
+### REJECT ∩ DIRECT（按模块顺序将以 REJECT 拦截，预期为国内广告统计域名）: 274 条
     - 003store.com
     - 165tchuang.com
     - 1l1.cc
@@ -88,7 +88,6 @@ main.conf              conf       OK            72
     - 644446.com
     - 68287zubo85737.com
     - 6fm4dcpj31.com
-    - 6pctuhriw.com
     - 73336zubo25326.com
     - 88362zubo95838.com
     - 8k69vb6421.com
@@ -114,6 +113,7 @@ main.conf              conf       OK            72
     - aizhantj.com
     - alimama.com
     - allyes.com
+    - app-analytics-services.com
     ...（仅列前 50）
 
 ### REJECT ∩ PROXY（将对代理域名生效拦截，预期为国外广告域名）: 122 条
