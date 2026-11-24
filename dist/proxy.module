@@ -1,5 +1,5 @@
 #!name=代理
-#!desc=自动聚合 | 策略 PROXY | 规则 28612 条 | 更新 2026-11-23 | 明细见 dist/report.txt
+#!desc=自动聚合 | 策略 PROXY | 规则 28613 条 | 更新 2026-11-24 | 明细见 dist/report.txt
 #!category=分流
 
 [Rule]
@@ -10708,6 +10708,7 @@ DOMAIN-SUFFIX,gelbooru.wjcodes.com,PROXY
 DOMAIN-SUFFIX,gemfire.net,PROXY
 DOMAIN-SUFFIX,gemfury.com,PROXY
 DOMAIN-SUFFIX,gemini.com,PROXY
+DOMAIN-SUFFIX,gemma.ai,PROXY
 DOMAIN-SUFFIX,gen.lib.rus.ec,PROXY
 DOMAIN-SUFFIX,genbank.ru,PROXY
 DOMAIN-SUFFIX,gencraft.com,PROXY
