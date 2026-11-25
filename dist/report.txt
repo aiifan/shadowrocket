@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28613
-    v2fly     域名=0 规则=27199 丢弃关键词=0 跳过=224
+proxy.module           bucket     OK         28618
+    v2fly     域名=0 规则=27204 丢弃关键词=0 跳过=224
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 9e37ec6e106a
+        sha1 bebb0c36141a
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,10 +48,10 @@ proxy.module           bucket     OK         28613
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        195520
-    adguard   域名=193608 规则=0 丢弃关键词=0 跳过=2225
+reject.module          bucket     OK        195939
+    adguard   域名=194027 规则=0 丢弃关键词=0 跳过=2222
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 97f7925c5a3b
+        sha1 e5503a3f1df2
     plain     域名=3557 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
         sha1 d0ee743ef6e5
@@ -116,7 +116,7 @@ main.conf              conf       OK            72
     - app-analytics-services.com
     ...（仅列前 50）
 
-### REJECT ∩ PROXY（将对代理域名生效拦截，预期为国外广告域名）: 122 条
+### REJECT ∩ PROXY（将对代理域名生效拦截，预期为国外广告域名）: 123 条
     - 0emm.com
     - 2mdn-cn.net
     - 2mdn.net
