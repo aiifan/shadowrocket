@@ -21,10 +21,10 @@ ios.module             bucket     OK             5
 me.module              bucket     OK             3
     源: build/buckets/me.py（透传桶，无上游）
 
-proxy.module           bucket     OK         28629
-    v2fly     域名=0 规则=27215 丢弃关键词=0 跳过=224
+proxy.module           bucket     OK         28634
+    v2fly     域名=0 规则=27220 丢弃关键词=0 跳过=224
         https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/proxy-list.txt
-        sha1 f3726765b5d2
+        sha1 fa225da41980
     surge     域名=0 规则=34 丢弃关键词=1 跳过=0
         https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list
         sha1 1d0d434939f0
@@ -48,13 +48,13 @@ proxy.module           bucket     OK         28629
         sha1 76d13e39d5be
     手工规则 0 条（源: build/buckets/proxy.py）
 
-reject.module          bucket     OK        196671
-    adguard   域名=194759 规则=0 丢弃关键词=0 跳过=2223
+reject.module          bucket     OK        197076
+    adguard   域名=195154 规则=0 丢弃关键词=0 跳过=2226
         https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt
-        sha1 6639be65c533
-    plain     域名=3560 规则=0 丢弃关键词=0 跳过=0
+        sha1 834ad0d1140a
+    plain     域名=3566 规则=0 丢弃关键词=0 跳过=0
         https://pgl.yoyo.org/adservers/serverlist.php?hostformat=nohtml&showintro=0
-        sha1 0b5c0ec664e6
+        sha1 7b1da16a8588
     手工规则 0 条（源: build/buckets/reject.py）
 
 main.conf              conf       OK            72
